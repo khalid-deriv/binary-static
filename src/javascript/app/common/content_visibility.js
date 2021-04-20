@@ -44,9 +44,12 @@ const updateTabDisplay = require('../../_common/tab_selector').updateTabDisplay;
             data-show='SVG'         -> throws error
 */
 
-const visible_classname = 'data-show-visible';
-const mt_company_rule   = 'mtcompany';
-const eu_country_rule   = 'eucountry';
+const visible_classname    = 'data-show-visible';
+const mt_company_rule      = 'mtcompany';
+const eu_country_rule      = 'eucountry';
+const options_blocked_rule = 'optionsblocked';
+
+const options_blocked_countries = ['au'];
 
 const ContentVisibility = (() => {
     let $center_select_m;
@@ -57,6 +60,7 @@ const ContentVisibility = (() => {
         return new Promise(resolve => {
             BinarySocket.wait('authorize', 'landing_company', 'website_status').then(() => {
                 const current_landing_company_shortcode = State.getResponse('authorize.landing_company_name') || 'default';
+                const country              = State.getResponse('authorize.country');
                 const mt_financial_company = State.getResponse('landing_company.mt_financial_company');
                 const mt_gaming_company    = State.getResponse('landing_company.mt_gaming_company');
 
@@ -71,7 +75,8 @@ const ContentVisibility = (() => {
                     current_landing_company_shortcode,
                     MetaTrader.isEligible(),
                     // We then pass the list of found mt5fin company shortcodes as an array
-                    arr_mt5fin_shortcodes
+                    arr_mt5fin_shortcodes,
+                    country
                 );
 
                 resolve();
@@ -133,7 +138,8 @@ const ContentVisibility = (() => {
         attr_str,
         current_landing_company_shortcode,
         client_has_mt_company,
-        arr_mt5fin_shortcodes
+        arr_mt5fin_shortcodes,
+        country
     ) => {
         const {
             is_exclude,
@@ -146,6 +152,7 @@ const ContentVisibility = (() => {
         const rule_set_has_current    = rule_set.has(current_landing_company_shortcode);
         const rule_set_has_mt         = rule_set.has(mt_company_rule);
         const rule_set_has_eu_country = rule_set.has(eu_country_rule);
+        const options_blocked         = rule_set.has(options_blocked_rule);
 
         let show_element = false;
 
@@ -164,14 +171,19 @@ const ContentVisibility = (() => {
         if (Array.isArray(arr_mt5fin_shortcodes)) {
             if (arr_mt5fin_shortcodes.some(el => mt5fin_rules.includes(el))) show_element = !is_exclude;
         }
+        if (options_blocked && options_blocked_countries.includes(country)) show_element = !is_exclude;
 
         return show_element;
     };
 
-    const controlVisibility = (current_landing_company_shortcode, client_has_mt_company, mt5_login_list) => {
+    const controlVisibility = (current_landing_company_shortcode, client_has_mt_company, mt5_login_list, country) => {
         document.querySelectorAll('[data-show]').forEach(el => {
             const attr_str      = el.dataset.show;
-            if (shouldShowElement(attr_str, current_landing_company_shortcode, client_has_mt_company, mt5_login_list)) {
+            if (shouldShowElement(attr_str,
+                current_landing_company_shortcode,
+                client_has_mt_company,
+                mt5_login_list,
+                country)) {
                 el.classList.add(visible_classname);
             } else {
                 const open_tab_url = new RegExp(`\\?.+_tabs=${el.id}`, 'i');
