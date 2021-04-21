@@ -174,10 +174,7 @@ const ContentVisibility = (() => {
     const controlVisibility = (current_landing_company_shortcode, client_has_mt_company, mt5_login_list) => {
         document.querySelectorAll('[data-show]').forEach(el => {
             const attr_str      = el.dataset.show;
-            if (shouldShowElement(attr_str,
-                current_landing_company_shortcode,
-                client_has_mt_company,
-                mt5_login_list)) {
+            if (shouldShowElement(attr_str, current_landing_company_shortcode, client_has_mt_company, mt5_login_list)) {
                 el.classList.add(visible_classname);
             } else {
                 const open_tab_url = new RegExp(`\\?.+_tabs=${el.id}`, 'i');
