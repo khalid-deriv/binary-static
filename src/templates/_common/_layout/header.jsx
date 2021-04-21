@@ -73,8 +73,8 @@ const Header = () => (
                                         <div />
                                     </div>
                                     <div className='gr-9 gr-hide-m gr-hide-p binary-logo-text'>
-                                        <div data-show='-maltainvest' />
-                                        <div data-show='maltainvest' className='binary-type-logo-old' />
+                                        <div data-show='-maltainvest, -optionsblocked' />
+                                        <div data-show='maltainvest, optionsblocked' className='binary-type-logo-old' />
                                     </div>
                                 </div>
                             </a>
