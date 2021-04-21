@@ -134,7 +134,7 @@ const ContentVisibility = (() => {
         attr_str,
         current_landing_company_shortcode,
         client_has_mt_company,
-        arr_mt5fin_shortcodes,
+        arr_mt5fin_shortcodes
     ) => {
         const {
             is_exclude,
