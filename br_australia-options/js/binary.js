@@ -695,6 +695,13 @@ var ClientBase = function () {
         return is_current ? currency && !get('is_virtual') && has_account_criteria && !isCryptocurrency(currency) : has_account_criteria;
     };
 
+    var isOptionsBlocked = function isOptionsBlocked() {
+        var options_blocked_countries = ['au'];
+        var country = State.getResponse('authorize.country');
+
+        return options_blocked_countries.includes(country);
+    };
+
     return {
         init: init,
         isLoggedIn: isLoggedIn,
@@ -705,6 +712,7 @@ var ClientBase = function () {
         getAccountType: getAccountType,
         isAccountOfType: isAccountOfType,
         isAuthenticationAllowed: isAuthenticationAllowed,
+        isOptionsBlocked: isOptionsBlocked,
         getAccountOfType: getAccountOfType,
         hasAccountType: hasAccountType,
         hasCurrencyType: hasCurrencyType,
@@ -1355,29 +1363,30 @@ module.exports = GTM;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _require = __webpack_require__(/*! @livechat/customer-sdk */ "./node_modules/@livechat/customer-sdk/dist/customer-sdk.esm.js"),
-    init = _require.init;
-
 var BinarySocket = __webpack_require__(/*! ./socket_base */ "./src/javascript/_common/base/socket_base.js");
 var ClientBase = __webpack_require__(/*! ./client_base */ "./src/javascript/_common/base/client_base.js");
+var TrafficSource = __webpack_require__(/*! ../../app/common/traffic_source */ "./src/javascript/app/common/traffic_source.js");
+var licenseID = __webpack_require__(/*! ../utility */ "./src/javascript/_common/utility.js").lc_licenseID;
 
 var LiveChat = function () {
-    var licenseID = 12049137;
-    var clientID = '66aa088aad5a414484c1fd1fa8a5ace7';
-    var session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '', email: '' };
+    var utm_data = TrafficSource.getData();
+    var utm_source = TrafficSource.getSource(utm_data) || '';
+    var utm_campaign = utm_data.utm_campaign || '';
+    var utm_medium = utm_data.utm_medium || '';
+    var session_variables = { is_logged_in: false, loginid: '', landing_company_shortcode: '', currency: '', residence: '', email: '', utm_source: utm_source, utm_medium: utm_medium, utm_campaign: utm_campaign };
     var client_email = void 0,
         first_name = void 0,
         last_name = void 0;
 
     var setSessionVariables = function setSessionVariables() {
+        var is_logged_in = !!ClientBase.isLoggedIn();
         var loginid = ClientBase.get('loginid');
         var landing_company_shortcode = ClientBase.get('landing_company_shortcode');
         var currency = ClientBase.get('currency');
         var residence = ClientBase.get('residence');
         var email = ClientBase.get('email');
 
-        session_variables = _extends({}, loginid && { loginid: loginid }, landing_company_shortcode && { landing_company_shortcode: landing_company_shortcode }, currency && { currency: currency }, residence && { residence: residence }, email && { email: email });
-
+        session_variables = _extends({}, is_logged_in && { is_logged_in: is_logged_in }, loginid && { loginid: loginid }, landing_company_shortcode && { landing_company_shortcode: landing_company_shortcode }, currency && { currency: currency }, residence && { residence: residence }, email && { email: email }, utm_source && { utm_source: utm_source }, utm_campaign && { utm_campaign: utm_campaign }, utm_medium && { utm_medium: utm_medium });
         window.LiveChatWidget.call('set_session_variables', session_variables);
     };
 
@@ -1432,39 +1441,6 @@ var LiveChat = function () {
                 });
             });
         }
-    };
-
-    // Called when logging out to end ongoing chats if there is any
-    var endLiveChat = function endLiveChat() {
-        return new Promise(function (resolve) {
-            session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '', email: '' };
-            window.LiveChatWidget.call('set_session_variables', session_variables);
-            window.LiveChatWidget.call('set_customer_email', ' ');
-            window.LiveChatWidget.call('set_customer_name', ' ');
-
-            try {
-                var customerSDK = init({
-                    licenseId: licenseID,
-                    clientId: clientID
-                });
-                customerSDK.on('connected', function () {
-                    if (window.LiveChatWidget.get('chat_data')) {
-                        var _window$LiveChatWidge = window.LiveChatWidget.get('chat_data'),
-                            chatId = _window$LiveChatWidge.chatId,
-                            threadId = _window$LiveChatWidge.threadId;
-
-                        if (threadId) {
-                            customerSDK.deactivateChat({ chatId: chatId }).catch(function () {
-                                return null;
-                            });
-                        }
-                    }
-                    resolve();
-                });
-            } catch (e) {
-                resolve();
-            }
-        });
     };
 
     // Delete existing LiveChat instance when there is no chat running
@@ -1523,7 +1499,6 @@ var LiveChat = function () {
     };
 
     return {
-        endLiveChat: endLiveChat,
         initialize: initialize,
         livechatDeletion: livechatDeletion,
         livechatFallback: livechatFallback,
@@ -9823,6 +9798,9 @@ var PromiseClass = function PromiseClass() {
     });
 };
 
+var lc_licenseID = 12049137;
+var lc_clientID = '66aa088aad5a414484c1fd1fa8a5ace7';
+
 module.exports = {
     showLoadingImage: showLoadingImage,
     getHighestZIndex: getHighestZIndex,
@@ -9842,7 +9820,9 @@ module.exports = {
     findParent: findParent,
     getStaticHash: getStaticHash,
     PromiseClass: PromiseClass,
-    removeObjProperties: removeObjProperties
+    removeObjProperties: removeObjProperties,
+    lc_licenseID: lc_licenseID,
+    lc_clientID: lc_clientID
 };
 
 /***/ }),
@@ -10530,22 +10510,26 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var _require = __webpack_require__(/*! @livechat/customer-sdk */ "./node_modules/@livechat/customer-sdk/dist/customer-sdk.esm.js"),
+    init = _require.init;
+
 var BinarySocket = __webpack_require__(/*! ./socket */ "./src/javascript/app/base/socket.js");
 var Defaults = __webpack_require__(/*! ../pages/trade/defaults */ "./src/javascript/app/pages/trade/defaults.js");
 var RealityCheckData = __webpack_require__(/*! ../pages/user/reality_check/reality_check.data */ "./src/javascript/app/pages/user/reality_check/reality_check.data.js");
 var ClientBase = __webpack_require__(/*! ../../_common/base/client_base */ "./src/javascript/_common/base/client_base.js");
 var GTM = __webpack_require__(/*! ../../_common/base/gtm */ "./src/javascript/_common/base/gtm.js");
 var SocketCache = __webpack_require__(/*! ../../_common/base/socket_cache */ "./src/javascript/_common/base/socket_cache.js");
-var LiveChat = __webpack_require__(/*! ../../_common/base/livechat */ "./src/javascript/_common/base/livechat.js");
 
-var _require = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js"),
-    isBinaryDomain = _require.isBinaryDomain;
+var _require2 = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js"),
+    isBinaryDomain = _require2.isBinaryDomain;
 
 var getElementById = __webpack_require__(/*! ../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
 var removeCookies = __webpack_require__(/*! ../../_common/storage */ "./src/javascript/_common/storage.js").removeCookies;
 var urlFor = __webpack_require__(/*! ../../_common/url */ "./src/javascript/_common/url.js").urlFor;
 var applyToAllElements = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").applyToAllElements;
 var getPropertyValue = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").getPropertyValue;
+var licenseID = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").lc_licenseID;
+var clientID = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").lc_clientID;
 
 var Client = function () {
 
@@ -10625,6 +10609,39 @@ var Client = function () {
         }
     };
 
+    // Called when logging out to end ongoing chats if there is any
+    var endLiveChat = function endLiveChat() {
+        return new Promise(function (resolve) {
+            var session_variables = { loginid: '', landing_company_shortcode: '', currency: '', residence: '', email: '' };
+            window.LiveChatWidget.call('set_session_variables', session_variables);
+            window.LiveChatWidget.call('set_customer_email', ' ');
+            window.LiveChatWidget.call('set_customer_name', ' ');
+
+            try {
+                var customerSDK = init({
+                    licenseId: licenseID,
+                    clientId: clientID
+                });
+                customerSDK.on('connected', function () {
+                    if (window.LiveChatWidget.get('chat_data')) {
+                        var _window$LiveChatWidge = window.LiveChatWidget.get('chat_data'),
+                            chatId = _window$LiveChatWidge.chatId,
+                            threadId = _window$LiveChatWidge.threadId;
+
+                        if (threadId) {
+                            customerSDK.deactivateChat({ chatId: chatId }).catch(function () {
+                                return null;
+                            });
+                        }
+                    }
+                    resolve();
+                });
+            } catch (e) {
+                resolve();
+            }
+        });
+    };
+
     var doLogout = function doLogout(response) {
 
         if (response.logout !== 1) return;
@@ -10640,7 +10657,7 @@ var Client = function () {
         SocketCache.clear();
         RealityCheckData.clear();
         if (isBinaryDomain()) {
-            LiveChat.endLiveChat().then(function () {
+            endLiveChat().then(function () {
                 redirection(response);
             });
         } else {
@@ -11005,7 +11022,7 @@ var Header = function () {
 
     var logoOnClick = function logoOnClick() {
         if (Client.isLoggedIn()) {
-            var url = Client.isAccountOfType('financial') ? Url.urlFor('user/metatrader') : Client.defaultRedirectUrl();
+            var url = Client.isAccountOfType('financial') || Client.isOptionsBlocked() ? Url.urlFor('user/metatrader') : Client.defaultRedirectUrl();
             BinaryPjax.load(url);
         } else {
             BinaryPjax.load(Url.urlFor(''));
@@ -11572,7 +11589,7 @@ var LoggedInHandler = function () {
             if (set_default) {
                 var lang_cookie = urlLang(redirect_url) || Cookies.get('language');
                 var language = getLanguage();
-                redirect_url = Client.isAccountOfType('financial') ? urlFor('user/metatrader') : Client.defaultRedirectUrl();
+                redirect_url = Client.isAccountOfType('financial') || Client.isOptionsBlocked() ? urlFor('user/metatrader') : Client.defaultRedirectUrl();
                 if (lang_cookie && lang_cookie !== language) {
                     redirect_url = redirect_url.replace(new RegExp('/' + language + '/', 'i'), '/' + lang_cookie.toLowerCase() + '/');
                 }
@@ -13676,8 +13693,6 @@ var mt_company_rule = 'mtcompany';
 var eu_country_rule = 'eucountry';
 var options_blocked_rule = 'optionsblocked';
 
-var options_blocked_countries = ['au'];
-
 var ContentVisibility = function () {
     var $center_select_m = void 0;
 
@@ -13687,7 +13702,6 @@ var ContentVisibility = function () {
         return new Promise(function (resolve) {
             BinarySocket.wait('authorize', 'landing_company', 'website_status').then(function () {
                 var current_landing_company_shortcode = State.getResponse('authorize.landing_company_name') || 'default';
-                var country = State.getResponse('authorize.country');
                 var mt_financial_company = State.getResponse('landing_company.mt_financial_company');
                 var mt_gaming_company = State.getResponse('landing_company.mt_gaming_company');
 
@@ -13701,7 +13715,7 @@ var ContentVisibility = function () {
 
                 controlVisibility(current_landing_company_shortcode, MetaTrader.isEligible(),
                 // We then pass the list of found mt5fin company shortcodes as an array
-                arr_mt5fin_shortcodes, country);
+                arr_mt5fin_shortcodes);
 
                 resolve();
             });
@@ -13773,7 +13787,7 @@ var ContentVisibility = function () {
         return rule.match(/^mt5fin:(.+)$/)[1];
     };
 
-    var shouldShowElement = function shouldShowElement(attr_str, current_landing_company_shortcode, client_has_mt_company, arr_mt5fin_shortcodes, country) {
+    var shouldShowElement = function shouldShowElement(attr_str, current_landing_company_shortcode, client_has_mt_company, arr_mt5fin_shortcodes) {
         var _parseAttributeString = parseAttributeString(attr_str),
             is_exclude = _parseAttributeString.is_exclude,
             mt5fin_rules = _parseAttributeString.mt5fin_rules,
@@ -13805,15 +13819,15 @@ var ContentVisibility = function () {
                 return mt5fin_rules.includes(el);
             })) show_element = !is_exclude;
         }
-        if (options_blocked && options_blocked_countries.includes(country)) show_element = !is_exclude;
+        if (options_blocked && Client.isOptionsBlocked()) show_element = !is_exclude;
 
         return show_element;
     };
 
-    var controlVisibility = function controlVisibility(current_landing_company_shortcode, client_has_mt_company, mt5_login_list, country) {
+    var controlVisibility = function controlVisibility(current_landing_company_shortcode, client_has_mt_company, mt5_login_list) {
         document.querySelectorAll('[data-show]').forEach(function (el) {
             var attr_str = el.dataset.show;
-            if (shouldShowElement(attr_str, current_landing_company_shortcode, client_has_mt_company, mt5_login_list, country)) {
+            if (shouldShowElement(attr_str, current_landing_company_shortcode, client_has_mt_company, mt5_login_list)) {
                 el.classList.add(visible_classname);
             } else {
                 var open_tab_url = new RegExp('\\?.+_tabs=' + el.id, 'i');
@@ -38511,7 +38525,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '26441'; // you can insert Application ID of your registered application here
+    var user_app_id = '26441'; // '1159'; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
