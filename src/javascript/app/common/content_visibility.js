@@ -166,8 +166,8 @@ const ContentVisibility = (() => {
         if (Array.isArray(arr_mt5fin_shortcodes)) {
             if (arr_mt5fin_shortcodes.some(el => mt5fin_rules.includes(el))) show_element = !is_exclude;
         }
-        if (options_blocked && Client.isOptionsBlocked()) { 
-          show_element = !is_exclude;
+        if (options_blocked && Client.isOptionsBlocked()) {
+            show_element = !is_exclude;
         }
 
         return show_element;
