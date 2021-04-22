@@ -9956,6 +9956,9 @@ var BinaryLoader = function () {
         },
         no_mf: function no_mf() {
             return localize('Sorry, but binary options trading is not available in your financial account.');
+        },
+        options_blocked: function options_blocked() {
+            return localize('Sorry, but binary options trading is not available in your country.');
         }
     };
 
@@ -9990,6 +9993,11 @@ var BinaryLoader = function () {
         if (config.no_mf && Client.isLoggedIn() && Client.isAccountOfType('financial')) {
             BinarySocket.wait('authorize').then(function () {
                 return displayMessage(error_messages.no_mf());
+            });
+        }
+        if (config.no_blocked_country && Client.isLoggedIn() && Client.isOptionsBlocked()) {
+            BinarySocket.wait('authorize').then(function () {
+                return displayMessage(error_messages.options_blocked());
             });
         }
 
@@ -10210,7 +10218,7 @@ var pages_config = {
     statementws: { module: Statement, is_authenticated: true, needs_currency: true },
     tnc_approvalws: { module: TNCApproval, is_authenticated: true, only_real: true },
     top_up_virtualws: { module: TopUpVirtual, is_authenticated: true, only_virtual: true },
-    trading: { module: TradePage, needs_currency: true, no_mf: true },
+    trading: { module: TradePage, needs_currency: true, no_mf: true, no_blocked_country: true },
     transferws: { module: PaymentAgentTransfer, is_authenticated: true, only_real: true },
     two_factor_authentication: { module: TwoFactorAuthentication, is_authenticated: true },
     virtualws: { module: VirtualAccOpening, not_authenticated: true },
@@ -13819,7 +13827,9 @@ var ContentVisibility = function () {
                 return mt5fin_rules.includes(el);
             })) show_element = !is_exclude;
         }
-        if (options_blocked && Client.isOptionsBlocked()) show_element = !is_exclude;
+        if (options_blocked && Client.isOptionsBlocked()) {
+            show_element = !is_exclude;
+        }
 
         return show_element;
     };
