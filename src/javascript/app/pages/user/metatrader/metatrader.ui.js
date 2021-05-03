@@ -788,7 +788,7 @@ const MetaTraderUI = (() => {
         const num_servers = populateTradingServers();
         if (num_servers.supported === num_servers.used + num_servers.disabled) {
             disableButtonLink('.btn-next');
-            $form.find('.step-2 #rbtn_gaming_financial').addClass('disabled');
+            $form.find('.step-2 #rbtn_gaming_financial').addClass('existed disabled');
         }
     };
 
