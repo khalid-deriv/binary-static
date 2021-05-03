@@ -9997,11 +9997,12 @@ var BinaryLoader = function () {
                 return displayMessage(error_messages.no_mf());
             });
         }
-        if (config.no_blocked_country && Client.isLoggedIn() && Client.isOptionsBlocked()) {
-            BinarySocket.wait('authorize').then(function () {
-                return displayMessage(error_messages.options_blocked());
-            });
-        }
+
+        BinarySocket.wait('authorize').then(function () {
+            if (config.no_blocked_country && Client.isLoggedIn() && Client.isOptionsBlocked()) {
+                displayMessage(error_messages.options_blocked());
+            }
+        });
 
         BinarySocket.setOnDisconnect(active_script.onDisconnect);
     };
@@ -35418,6 +35419,11 @@ var MetaTraderUI = function () {
                 displayStep(1);
             }
 
+            // disable next button in case if all servers are used or unavailable
+            if (num_servers.supported === num_servers.used + num_servers.disabled) {
+                disableButtonLink('.btn-next');
+            }
+
             var sample_account = MetaTraderConfig.getSampleAccount(new_account_type);
             _$form.find('#view_2 #mt5_account_type').text(sample_account.title);
             _$form.find('button[type="submit"]').attr('acc_type', MetaTraderConfig.getCleanAccType(newAccountGetType(), 2));
@@ -35585,13 +35591,6 @@ var MetaTraderUI = function () {
                 _$form.find('#view_1 .btn-next')[error_msg ? 'addClass' : 'removeClass']('button-disabled');
                 _$form.find('#view_1 .btn-cancel').removeClass('invisible');
             });
-        }
-
-        // disable next button and Synthetic option if all servers are used or unavailable
-        var num_servers = populateTradingServers();
-        if (num_servers.supported === num_servers.used + num_servers.disabled) {
-            disableButtonLink('.btn-next');
-            _$form.find('.step-2 #rbtn_gaming_financial').addClass('existed disabled');
         }
     };
 
@@ -38547,7 +38546,7 @@ var binary_desktop_app_id = 14473;
 
 var getAppId = function getAppId() {
     var app_id = null;
-    var user_app_id = '26441'; // '1159'; // you can insert Application ID of your registered application here
+    var user_app_id = '26455'; // '1159'; // you can insert Application ID of your registered application here
     var config_app_id = window.localStorage.getItem('config.app_id');
     var is_new_app = /\/app\//.test(window.location.pathname);
     if (config_app_id) {
