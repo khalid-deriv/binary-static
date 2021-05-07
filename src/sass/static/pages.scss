@@ -186,8 +186,6 @@
             border-bottom: 1px solid $COLOR_DARK_GRAY;
         }
         tr {
-            position: relative;
-
             .data-anchor-link {
                 display: none;
             }
@@ -1037,6 +1035,11 @@ body #not_authenticated_financial ul.checked > li {
         margin: 0 auto;
     }
     .submit-status table {
+
+        @media screen and (max-width: 500px) {
+            font-size: 0.7rem;
+        }
+
         th:not(:last-child) {
             width: 25%;
         }
