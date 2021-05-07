@@ -14,6 +14,13 @@ const isBinaryApp  = require('../../../../config').isBinaryApp;
 const MetaTraderConfig = (() => {
     const accounts_info = {};
 
+    const getAccountsInfo = (key, accounts) => {
+        const local_accounts_info = accounts || accounts_info;
+        if (local_accounts_info[key]) return local_accounts_info[key];
+        if (key && key.includes('synthetic')) return local_accounts_info[key.replace('synthetic', 'gaming')];
+        return undefined;
+    };
+
     let $messages;
     const needsRealMessage = () => $messages.find('#msg_switch').html();
 
@@ -105,7 +112,7 @@ const MetaTraderConfig = (() => {
                             if (is_ok) resolve();
                             else resolveWithMessage();
                         });
-                    } else if (sample_account.market_type === 'gaming') {
+                    } else if (sample_account.market_type === 'gaming' || sample_account.market_type === 'synthetic') {
                         let is_ok = true;
                         BinarySocket.wait('get_account_status', 'landing_company').then(async () => {
                             const response_get_account_status = State.getResponse('get_account_status');
@@ -209,7 +216,7 @@ const MetaTraderConfig = (() => {
             pre_submit: ($form, acc_type) => (
                 new Promise((resolve) => {
                     const sample_account = getSampleAccount(acc_type);
-                    const is_synthetic = sample_account.market_type === 'gaming';
+                    const is_synthetic = sample_account.market_type === 'gaming' || sample_account.market_type === 'synthetic';
                     const is_demo = /^demo_/.test(acc_type);
 
                     if (is_synthetic && !is_demo && State.getResponse('landing_company.gaming_company.shortcode') === 'malta') {
@@ -298,7 +305,7 @@ const MetaTraderConfig = (() => {
             success_msg: (response, acc_type) => localize('[_1] deposit from [_2] to account number [_3] is done. Transaction ID: [_4]', [
                 Currency.formatMoney(State.getResponse('authorize.currency'), response.echo_req.amount),
                 response.echo_req.from_binary,
-                accounts_info[acc_type].info.display_login,
+                getAccountsInfo(acc_type).info.display_login,
                 response.binary_transaction_id,
             ]),
             prerequisites: () => new Promise((resolve) => {
@@ -319,14 +326,14 @@ const MetaTraderConfig = (() => {
             title      : localize('Withdraw'),
             success_msg: (response, acc_type) => localize('[_1] withdrawal from account number [_2] to [_3] is done. Transaction ID: [_4]', [
                 Currency.formatMoney(getCurrency(acc_type), response.echo_req.amount),
-                accounts_info[acc_type].info.display_login,
+                getAccountsInfo(acc_type).info.display_login,
                 response.echo_req.to_binary,
                 response.binary_transaction_id,
             ]),
             prerequisites: acc_type => new Promise((resolve) => {
                 if (Client.get('is_virtual')) {
                     resolve(needsRealMessage());
-                } else if (accounts_info[acc_type].sub_account_type === 'financial' && accounts_info[acc_type].landing_company_short !== 'svg') {
+                } else if (getAccountsInfo(acc_type).sub_account_type === 'financial' && getAccountsInfo(acc_type).landing_company_short !== 'svg') {
                     BinarySocket.wait('get_account_status').then(() => {
                         if (isAuthenticationPromptNeeded()) {
                             resolve($messages.find('#msg_authenticate').html());
@@ -344,18 +351,18 @@ const MetaTraderConfig = (() => {
     const fields = {
         new_account: {
             txt_main_pass    : { id: '#txt_main_pass',     request_field: 'mainPassword' },
-            txt_re_main_pass : { id: '#txt_re_main_pass' },
             ddl_trade_server : { id: '#ddl_trade_server', is_radio: true },
             chk_tnc          : { id: '#chk_tnc' },
             additional_fields: acc_type => {
                 const sample_account = getSampleAccount(acc_type);
                 const is_demo = /^demo_/.test(acc_type);
                 const get_settings = State.getResponse('get_settings');
+                const account_type = sample_account.market_type === 'synthetic' ? 'gaming' : sample_account.market_type;
                 // First name is not set when user has no real account
                 const name = get_settings.first_name && get_settings.last_name ? `${get_settings.first_name} ${get_settings.last_name}` : sample_account.title;
                 return ({
                     name,
-                    account_type: is_demo ? 'demo' : sample_account.market_type,
+                    account_type: is_demo ? 'demo' : account_type,
                     email       : Client.get('email'),
                     leverage    : sample_account.leverage,
                     ...(!is_demo && hasMultipleTradeServers(acc_type, accounts_info) && {
@@ -368,22 +375,20 @@ const MetaTraderConfig = (() => {
             },
         },
         password_change: {
-            ddl_password_type  : { id: '#ddl_password_type', request_field: 'password_type', is_radio: true },
-            txt_old_password   : { id: '#txt_old_password',  request_field: 'old_password' },
-            txt_new_password   : { id: '#txt_new_password',  request_field: 'new_password' },
-            txt_re_new_password: { id: '#txt_re_new_password' },
-            additional_fields  :
+            ddl_password_type: { id: '#ddl_password_type', request_field: 'password_type', is_radio: true },
+            txt_old_password : { id: '#txt_old_password',  request_field: 'old_password' },
+            txt_new_password : { id: '#txt_new_password',  request_field: 'new_password' },
+            additional_fields:
                 acc_type => ({
-                    login: accounts_info[acc_type].info.login,
+                    login: getAccountsInfo(acc_type).info.login,
                 }),
         },
         password_reset: {
-            ddl_password_type  : { id: '#ddl_reset_password_type', request_field: 'password_type', is_radio: true },
-            txt_new_password   : { id: '#txt_reset_new_password',  request_field: 'new_password' },
-            txt_re_new_password: { id: '#txt_reset_re_new_password' },
-            additional_fields  :
+            ddl_password_type: { id: '#ddl_reset_password_type', request_field: 'password_type', is_radio: true },
+            txt_new_password : { id: '#txt_reset_new_password',  request_field: 'new_password' },
+            additional_fields:
                 (acc_type, token) => ({
-                    login            : accounts_info[acc_type].info.login,
+                    login            : getAccountsInfo(acc_type).info.login,
                     verification_code: token,
                 }),
         },
@@ -402,14 +407,14 @@ const MetaTraderConfig = (() => {
             additional_fields:
                 acc_type => ({
                     from_binary: Client.get('loginid'),
-                    to_mt5     : accounts_info[acc_type].info.login,
+                    to_mt5     : getAccountsInfo(acc_type).info.login,
                 }),
         },
         withdrawal: {
             txt_amount       : { id: '#txt_amount_withdrawal', request_field: 'amount' },
             additional_fields:
                 acc_type => ({
-                    from_mt5 : accounts_info[acc_type].info.login,
+                    from_mt5 : getAccountsInfo(acc_type).info.login,
                     to_binary: Client.get('loginid'),
                 }),
         },
@@ -418,19 +423,16 @@ const MetaTraderConfig = (() => {
     const validations = () => ({
         new_account: [
             { selector: fields.new_account.txt_main_pass.id,     validations: [['req', { hide_asterisk: true }], 'password', 'compare_to_email'] },
-            { selector: fields.new_account.txt_re_main_pass.id,  validations: [['req', { hide_asterisk: true }], ['compare', { to: fields.new_account.txt_main_pass.id }]] },
             { selector: fields.new_account.ddl_trade_server.id,  validations: [['req', { hide_asterisk: true }]] },
         ],
         password_change: [
             { selector: fields.password_change.ddl_password_type.id,   validations: [['req', { hide_asterisk: true }]] },
             { selector: fields.password_change.txt_old_password.id,    validations: [['req', { hide_asterisk: true }]] },
-            { selector: fields.password_change.txt_new_password.id,    validations: [['req', { hide_asterisk: true }], 'password', ['not_equal', { to: fields.password_change.txt_old_password.id, name1: localize('Current password'), name2: localize('New password') }], 'compare_to_email'], re_check_field: fields.password_change.txt_re_new_password.id },
-            { selector: fields.password_change.txt_re_new_password.id, validations: [['req', { hide_asterisk: true }], ['compare', { to: fields.password_change.txt_new_password.id }]] },
+            { selector: fields.password_change.txt_new_password.id,    validations: [['req', { hide_asterisk: true }], 'password', ['not_equal', { to: fields.password_change.txt_old_password.id, name1: localize('Current password'), name2: localize('New password') }], 'compare_to_email'] },
         ],
         password_reset: [
             { selector: fields.password_reset.ddl_password_type.id,   validations: [['req', { hide_asterisk: true }]] },
-            { selector: fields.password_reset.txt_new_password.id,    validations: [['req', { hide_asterisk: true }], 'password', 'compare_to_email'], re_check_field: fields.password_reset.txt_re_new_password.id },
-            { selector: fields.password_reset.txt_re_new_password.id, validations: [['req', { hide_asterisk: true }], ['compare', { to: fields.password_reset.txt_new_password.id }]] },
+            { selector: fields.password_reset.txt_new_password.id,    validations: [['req', { hide_asterisk: true }], 'password', 'compare_to_email'] },
         ],
         verify_password_reset_token: [
             { selector: fields.verify_password_reset_token.txt_verification_code.id, validations: [['req', { hide_asterisk: true }], 'token'], exclude_request: 1 },
@@ -491,7 +493,7 @@ const MetaTraderConfig = (() => {
                     // e.g. transfer amount is 10 but client balance is 5
                     ['custom', {
                         func: () => {
-                            const balance = accounts_info[Client.get('mt5_account')].info.balance;
+                            const balance = getAccountsInfo(Client.get('mt5_account')).info.balance;
                             const is_balance_more_than_entered = +balance >= +$(fields.withdrawal.txt_amount.id).val();
 
                             return balance && is_balance_more_than_entered;
@@ -502,7 +504,7 @@ const MetaTraderConfig = (() => {
                     // e.g. client balance could be 0.45 but min limit could be 1
                     ['custom', {
                         func: () => {
-                            const balance         = accounts_info[Client.get('mt5_account')].info.balance;
+                            const balance         = getAccountsInfo(Client.get('mt5_account')).info.balance;
                             const min_req_balance = Currency.getTransferLimits(getCurrency(Client.get('mt5_account')), 'min', 'mt5');
 
                             const is_balance_more_than_min_req = +balance >= +min_req_balance;
@@ -517,7 +519,7 @@ const MetaTraderConfig = (() => {
                         min : () => Currency.getTransferLimits(getCurrency(Client.get('mt5_account')), 'min', 'mt5'),
                         max : () => {
                             const mt5_limit = Currency.getTransferLimits(getCurrency(Client.get('mt5_account')), 'max', 'mt5');
-                            const balance   = accounts_info[Client.get('mt5_account')].info.balance;
+                            const balance   = getAccountsInfo(Client.get('mt5_account')).info.balance;
 
                             // if balance is 0, pass this validation so we can show insufficient funds in the next custom validation
                             return Math.min(mt5_limit, balance || mt5_limit);
@@ -530,11 +532,11 @@ const MetaTraderConfig = (() => {
         ],
     });
 
-    const hasAccount = acc_type => (accounts_info[acc_type] || {}).info;
+    const hasAccount = acc_type => (getAccountsInfo(acc_type) || {}).info;
 
-    const getCurrency = acc_type => accounts_info[acc_type].info.currency;
+    const getCurrency = acc_type => getAccountsInfo(acc_type).info.currency;
 
-    // if you have acc_type, use accounts_info[acc_type].info.display_login
+    // if you have acc_type, use getAccountsInfo(acc_type).info.display_login
     // otherwise, use this function to format login into display login
     const getDisplayLogin = login => login.replace(/^MT[DR]?/i, '');
 
@@ -552,10 +554,18 @@ const MetaTraderConfig = (() => {
         return is_need_verification;
     };
 
-    // remove server from acc_type for cases where we don't have it
+    // remove server from acc_type for cases where we don't need it
     // e.g. during new account creation no server is set yet
-    const getCleanAccType = (acc_type) =>
-        /\d$/.test(acc_type) ? acc_type.substr(0, acc_type.lastIndexOf('_')) : acc_type;
+    // due to ability for server names to have one or more underscores in the name
+    // we can pass the number of underscores to remove it from acc_type
+    // f.e. getCleanAccType('financial_ts01_02', 2) returns 'financial'
+    const getCleanAccType = (acc_type, underscores) => {
+        if (underscores > 1) {
+            // eslint-disable-next-line no-param-reassign
+            acc_type = getCleanAccType(acc_type, --underscores);
+        }
+        return /\d$/.test(acc_type) ? acc_type.substr(0, acc_type.lastIndexOf('_')) : acc_type;
+    };
 
     // if no server exists yet, e.g. during new account creation
     // we want to get information like landing company etc which is shared
@@ -563,15 +573,27 @@ const MetaTraderConfig = (() => {
     // accounts_info item that has the same market type and sub account type
     const getSampleAccount = (acc_type) => {
         if (acc_type in accounts_info) {
-            return accounts_info[acc_type];
+            return getAccountsInfo(acc_type);
         }
         const regex = new RegExp(getCleanAccType(acc_type));
-        return accounts_info[Object.keys(accounts_info).find(account => regex.test(account))];
+        return getAccountsInfo(Object.keys(accounts_info).find(account => regex.test(account)));
+    };
+
+    const hasTradeServers = (acc_type) => {
+        const is_real = acc_type.startsWith('real');
+        const is_gaming = getAccountsInfo(acc_type).market_type === 'gaming' || getAccountsInfo(acc_type).market_type === 'synthetic';
+        const is_clean_type = acc_type.endsWith('financial') || acc_type.endsWith('stp');
+        if ((/unknown/.test(acc_type))) {
+            return false;
+        }
+        return !(is_real && (is_gaming || is_clean_type));
     };
 
     const hasMultipleTradeServers = (acc_type, accounts) => {
-        const clean_acc_type_a = getCleanAccType(acc_type);
-        return Object.keys(accounts).filter(acc_type_b => clean_acc_type_a === getCleanAccType(acc_type_b)).length > 1;
+        // we need to call getCleanAccType twice as the server names have underscore in it
+        const clean_acc_type_a = getCleanAccType(acc_type, 2);
+        return Object.keys(accounts).filter(acc_type_b => clean_acc_type_a ===
+            getCleanAccType(acc_type_b, 2)).length > 1;
     };
 
     return {
@@ -581,6 +603,7 @@ const MetaTraderConfig = (() => {
         validations,
         needsRealMessage,
         hasAccount,
+        hasTradeServers,
         hasMultipleTradeServers,
         getCleanAccType,
         getCurrency,
@@ -592,8 +615,9 @@ const MetaTraderConfig = (() => {
         getAllAccounts: () => (
             Object.keys(accounts_info)
                 .filter(acc_type => hasAccount(acc_type))
-                .sort(acc_type => (accounts_info[acc_type].is_demo ? 1 : -1)) // real first
+                .sort(acc_type => (getAccountsInfo(acc_type).is_demo ? 1 : -1)) // real first
         ),
+        getAccountsInfo,
     };
 })();
 

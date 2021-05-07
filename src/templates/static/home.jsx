@@ -23,7 +23,7 @@ const Arrows = ({ direction, parent }) => (
 );
 
 const ArrowsMobile = ({ direction, parent }) => (
-    <div className='align-self-center gr-2 gr-hide gr-show-m gr-show-p gr-no-gutter'>
+    <div className={`align-self-center ${parent === 'market_tabs' ? 'gr-1' : 'gr-2'} gr-hide gr-show-m gr-show-p gr-no-gutter`}>
         <img
             className={`go-${direction} gr-5 gr-no-gutter gr-centered`}
             data-parent={parent}
@@ -36,7 +36,7 @@ const MarketsContent = ({ text, header, image, footnote }) => (
     <div className='gr-10 gr-12-m gr-centered'>
         <div className='gr-row'>
             <div className='gr-6 gr-12-m gr-12-p center-text-m order-2-m'>
-                <div className='gr-10-m gr-10-p gr-centered gr-gutter'>
+                <div className='gr-12-m gr-10-p gr-centered gr-gutter'>
                     <div className='gr-row'>
                         <ArrowsMobile parent='market_tabs' direction='left' />
                         <strong className='align-self-center gr-centered-m'>{header}</strong>
@@ -100,7 +100,7 @@ const AccountsTabContent = ({
                         <img className='responsive' src={it.url_for(image)} />
                     </div>
                     <div className={`center-text gr-12 gr-hide gr-show-m ${mobile_class || ''}`}>
-                        <div className='gr-8 gr-centered'>
+                        <div className='gr-10 gr-centered margin-top-10'>
                             <div className='gr-row'>
                                 <ArrowsMobile parent='account_tabs' direction='left' />
                                 <strong className='align-self-center gr-centered'>{mobile_header}</strong>
@@ -188,6 +188,7 @@ const Home = () => {
                             <div className='gr-row gr-row-align-center'>
                                 <SocialButton provider='google' />
                                 <SocialButton provider='facebook' />
+                                <SocialButton provider='apple' />
                             </div>
                         </div>
                     </div>

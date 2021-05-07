@@ -391,27 +391,39 @@ const Authenticate = (() => {
         processFilesUns(files);
     };
 
+    const cancelUpload = () => {
+        removeButtonLoading();
+        enableDisableSubmit();
+    };
+
     const processFiles = (files) => {
         const uploader = new DocumentUploader({ connection: BinarySocket.get() }); // send 'debug: true' here for debugging
         let idx_to_upload     = 0;
-        let is_any_file_error = false;
+        let has_file_error = false;
 
-        compressImageFiles(files).then((files_to_process) => {
-            readFiles(files_to_process).then((processed_files) => {
-                processed_files.forEach((file) => {
-                    if (file.message) {
-                        is_any_file_error = true;
-                        showError(file);
-                    }
-                });
+        readFiles(files).then((files_to_process) => {
+            files_to_process.forEach((file) => {
+                if (file.message) {
+                    has_file_error = true;
+                    showError(file);
+                }
+            });
+
+            if (has_file_error) {
+                cancelUpload();
+                return;
+            }
+            
+            compressImageFiles(files_to_process).then((processed_files) => {
                 const total_to_upload = processed_files.length;
-                if (is_any_file_error || !total_to_upload) {
-                    removeButtonLoading();
-                    enableDisableSubmit();
-                    return; // don't start submitting files until all front-end validation checks pass
+
+                if (!total_to_upload) {
+                    cancelUpload();
+                    return;
                 }
 
                 const isLastUpload = () => total_to_upload === idx_to_upload + 1;
+
                 // sequentially send files
                 const uploadFile = () => {
                     const $status = $submit_table.find(`.${processed_files[idx_to_upload].passthrough.class} .status`);
@@ -501,9 +513,9 @@ const Authenticate = (() => {
         const promises = [];
         files.forEach((f) => {
             const promise = new Promise((resolve) => {
-                if (isImageType(f.file.name)) {
-                    const $status = $submit_table.find(`.${f.class} .status`);
-                    const $filename = $submit_table.find(`.${f.class} .filename`);
+                if (isImageType(f.filename)) {
+                    const $status = $submit_table.find(`.${f.passthrough.class} .status`);
+                    const $filename = $submit_table.find(`.${f.passthrough.class} .filename`);
                     $status.text(`${localize('Compressing Image')}...`);
 
                     ConvertToBase64(f.file).then((img) => {
@@ -563,6 +575,7 @@ const Authenticate = (() => {
 
                     const format = (f.file.type.split('/')[1] || (f.file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
                     const obj    = {
+                        file          : f.file,
                         filename      : f.file.name,
                         buffer        : fr.result,
                         documentType  : f.type,
@@ -785,6 +798,7 @@ const Authenticate = (() => {
 
             showCTAButton('document', 'pending');
             $('#upload_complete').setVisibility(1);
+            $('#msg_personal_details').setVisibility(0);
         });
     };
 
@@ -903,6 +917,7 @@ const Authenticate = (() => {
             $('#authentication_loading').setVisibility(1);
             setTimeout(() => {
                 BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(() => {
+                    $('#msg_personal_details').setVisibility(0);
                     $('#upload_complete').setVisibility(1);
                     Header.displayAccountStatus();
                     $('#authentication_loading').setVisibility(0);
@@ -1059,6 +1074,7 @@ const Authenticate = (() => {
             }
             switch (identity.status) {
                 case 'none':
+                    $('#msg_personal_details').setVisibility(1);
                     if (onfido_unsupported) {
                         $('#not_authenticated_uns').setVisibility(1);
                         initUnsupported();
@@ -1093,6 +1109,7 @@ const Authenticate = (() => {
                 $('#not_authenticated_uns').setVisibility(1);
                 initUnsupported();
             } else {
+                $('#msg_personal_details').setVisibility(1);
                 initOnfido(service_token_response.token, documents_supported, country_code);
             }
         }

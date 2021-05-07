@@ -186,8 +186,6 @@
             border-bottom: 1px solid $COLOR_DARK_GRAY;
         }
         tr {
-            position: relative;
-
             .data-anchor-link {
                 display: none;
             }
@@ -1037,6 +1035,11 @@ body #not_authenticated_financial ul.checked > li {
         margin: 0 auto;
     }
     .submit-status table {
+
+        @media screen and (max-width: 500px) {
+            font-size: 0.7rem;
+        }
+
         th:not(:last-child) {
             width: 25%;
         }
@@ -1733,4 +1736,29 @@ body #not_authenticated_financial ul.checked > li {
 
 #self_exclusion_dialog #dialog_content {
     max-width: 496px;
+}
+
+.affiliate-ib {
+    &-calculation {
+        border: 1px solid $COLOR_BLACK;
+        padding: 10px;
+
+        &-minimum {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.signal_provider {
+    &-container {
+        display: flex;
+        @media screen and (max-width: 480px) {
+            flex-direction: column-reverse;
+        }
+    }
+    &-image {
+        border: 2px solid $COLOR_GRAY;
+    }
+
 }
