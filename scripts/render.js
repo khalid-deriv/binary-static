@@ -14,7 +14,6 @@ require('babel-register')({
 const React          = require('react');
 const RenderHTML     = require('react-render-html');
 const ReactDOMServer = require('../node_modules/react-dom/server.js'); // eslint-disable-line import/order
-const Cookies        = require('js-cookie');
 
 const renderComponent = (context, path) => {
     const Component = require(path).default; // eslint-disable-line
@@ -249,7 +248,6 @@ async function compile(page) {
             current_route  : page.current_route,
             is_pjax_request: false,
 
-            affiliate_token       : Cookies.getJSON('affiliate_tracking') || '',
             affiliate_signup_url  : `https://login.binary.com/signup.php?lang=${affiliate_language_code}`,
             affiliate_password_url: `https://login.binary.com/password-reset.php?lang=${affiliate_language_code}`,
             affiliate_email       : 'partners@binary.com',
