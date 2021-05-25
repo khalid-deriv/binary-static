@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const DerivBanner = ({ has_margin }) => (
     <div id='multiplier_banner_container' className={`invisible ui-helper-clearfix ${has_margin ? 'has_margin' : ''}`}>
-        <a id='multiplier-link' target='_blank' rel='noopener noreferrer' href='#>
+        <a id='multiplier-link' target='_blank' rel='noopener noreferrer' href='#'>
             <div className='multiplier_banner_title'>
                 <img className='multiplier_banner_logo' src={it.url_for('images/deriv/deriv-logo.svg')} />
                 <h3>{it.L('Multipliers')}</h3>
