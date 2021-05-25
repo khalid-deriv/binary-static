@@ -9863,7 +9863,6 @@ var NetworkMonitor = __webpack_require__(/*! ./network_monitor */ "./src/javascr
 var Page = __webpack_require__(/*! ./page */ "./src/javascript/app/base/page.js");
 var BinarySocket = __webpack_require__(/*! ./socket */ "./src/javascript/app/base/socket.js");
 var ContentVisibility = __webpack_require__(/*! ../common/content_visibility */ "./src/javascript/app/common/content_visibility.js");
-var DerivBanner = __webpack_require__(/*! ../common/deriv_banner */ "./src/javascript/app/common/deriv_banner.js");
 var GTM = __webpack_require__(/*! ../../_common/base/gtm */ "./src/javascript/_common/base/gtm.js");
 var Login = __webpack_require__(/*! ../../_common/base/login */ "./src/javascript/_common/base/login.js");
 var LiveChat = __webpack_require__(/*! ../../_common/base/livechat */ "./src/javascript/_common/base/livechat.js");
@@ -9898,7 +9897,6 @@ var BinaryLoader = function () {
 
         Client.init();
         NetworkMonitor.init();
-        DerivBanner.chooseBanner();
         container = getElementById('content-holder');
         container.addEventListener('binarypjax:before', beforeContentChange);
         window.addEventListener('beforeunload', beforeContentChange);
@@ -12014,7 +12012,7 @@ var Page = function () {
 
         Cookies.set('affiliate_tracking', cookie_hash, {
             expires: 365, // expires in 365 days
-            // path    : '/',
+            path: '/',
             domain: '.' + location.hostname.split('.').slice(-2).join('.'),
             sameSite: 'none',
             secure: true
@@ -12501,7 +12499,7 @@ var AccountOpening = function () {
                 }
 
                 var $tax_residence_select = $('#tax_residence');
-                $tax_residence_select.html($options_with_disabled.html());
+                $tax_residence_select.html($options.html());
 
                 if (tax_residence) {
                     var tax_residences_arr = tax_residence.split(',');
@@ -14047,67 +14045,34 @@ var getElementById = __webpack_require__(/*! ../../_common/common_functions */ "
 var createElement = __webpack_require__(/*! ../../_common/utility */ "./src/javascript/_common/utility.js").createElement;
 var getLanguage = __webpack_require__(/*! ../../_common/language */ "./src/javascript/_common/language.js").get;
 
-var banner_types = {
-    rebranding: 'rebranding',
-    multiplier: 'multiplier'
-};
 var affiliate_token = Cookies.getJSON('affiliate_tracking');
 
 var DerivBanner = function () {
-    var el_rebranding_banner_container = void 0,
-        el_multiplier_banner_container = void 0,
-        el_banner_to_show = void 0,
+    var el_multiplier_banner_container = void 0,
         el_close_button = void 0,
-        deriv_banner_type = void 0,
-        banner_link = void 0,
         multiplier_link = void 0;
 
     var onLoad = function onLoad() {
         var is_deriv_banner_dismissed = localStorage.getItem('is_deriv_banner_dismissed');
 
         if (!is_deriv_banner_dismissed) {
-            el_rebranding_banner_container = getElementById('deriv_banner_container');
             el_multiplier_banner_container = getElementById('multiplier_banner_container');
-            deriv_banner_type = localStorage.getItem('deriv_banner_type');
-            banner_link = getElementById('banner-link');
             multiplier_link = getElementById('multiplier-link');
 
             var lang = getLanguage().toLowerCase();
-            var banner_href = 'https://deriv.com/' + lang + '/interim/faq/?utm_source=binary&utm_medium=referral&utm_campaign=ww-banner-deriv-1020-en&utm_content=deriv-banner-rebranding';
             var multiplier_href = 'https://deriv.com/' + lang + '/trade-types/multiplier/?utm_source=binary&utm_medium=referral&utm_campaign=ww-banner-deriv-1020-en&utm_content=multiplier-banner-synthetic-indices-amplified';
 
-            banner_link.href = affiliate_token ? banner_href + '&t=' + affiliate_token.t : banner_href;
             multiplier_link.href = affiliate_token ? multiplier_href + '&t=' + affiliate_token.t : multiplier_href;
 
-            showBanner();
-
-            el_close_button = el_banner_to_show.querySelector('.deriv_banner_close') || createElement('div');
+            el_multiplier_banner_container.setVisibility(1);
+            el_close_button = el_multiplier_banner_container.querySelector('.deriv_banner_close') || createElement('div');
             el_close_button.addEventListener('click', onClose);
         }
     };
 
     var onClose = function onClose() {
-        el_banner_to_show.setVisibility(0);
+        el_multiplier_banner_container.setVisibility(0);
         localStorage.setItem('is_deriv_banner_dismissed', 1);
-    };
-
-    var showBanner = function showBanner() {
-        if (deriv_banner_type === banner_types.rebranding) {
-            el_banner_to_show = el_rebranding_banner_container;
-        } else {
-            el_banner_to_show = el_multiplier_banner_container;
-        }
-        el_banner_to_show.setVisibility(1);
-    };
-
-    var chooseBanner = function chooseBanner() {
-        if (localStorage.getItem('deriv_banner_type')) {
-            return;
-        }
-
-        var banner_type = Math.random() < 0.5 ? banner_types.rebranding : banner_types.multiplier;
-
-        localStorage.setItem('deriv_banner_type', banner_type);
     };
 
     var onUnload = function onUnload() {
@@ -14117,7 +14082,6 @@ var DerivBanner = function () {
     };
 
     return {
-        chooseBanner: chooseBanner,
         onLoad: onLoad,
         onUnload: onUnload
     };
@@ -29875,283 +29839,67 @@ module.exports = Settings;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var getAllCurrencies = __webpack_require__(/*! ../../get_currency */ "./src/javascript/app/pages/user/get_currency.js").getAllCurrencies;
-var getCurrenciesOfOtherAccounts = __webpack_require__(/*! ../../get_currency */ "./src/javascript/app/pages/user/get_currency.js").getCurrenciesOfOtherAccounts;
 var Metatrader = __webpack_require__(/*! ../../metatrader/metatrader */ "./src/javascript/app/pages/user/metatrader/metatrader.js");
 var BinarySocket = __webpack_require__(/*! ../../../../base/socket */ "./src/javascript/app/base/socket.js");
 var Client = __webpack_require__(/*! ../../../../base/client */ "./src/javascript/app/base/client.js");
 var Currency = __webpack_require__(/*! ../../../../common/currency */ "./src/javascript/app/common/currency.js");
-var localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
 var Url = __webpack_require__(/*! ../../../../../_common/url */ "./src/javascript/_common/url.js");
-var isCryptocurrency = __webpack_require__(/*! ../../../../../_common/base/currency_base */ "./src/javascript/_common/base/currency_base.js").isCryptocurrency;
 var hasAccountType = __webpack_require__(/*! ../../../../../_common/base/client_base */ "./src/javascript/_common/base/client_base.js").hasAccountType;
-var hasCurrencyType = __webpack_require__(/*! ../../../../../_common/base/client_base */ "./src/javascript/_common/base/client_base.js").hasCurrencyType;
-var hasOnlyCurrencyType = __webpack_require__(/*! ../../../../../_common/base/client_base */ "./src/javascript/_common/base/client_base.js").hasOnlyCurrencyType;
+var getElementById = __webpack_require__(/*! ../../../../../_common/common_functions */ "./src/javascript/_common/common_functions.js").getElementById;
+var localize = __webpack_require__(/*! ../../../../../_common/localize */ "./src/javascript/_common/localize.js").localize;
+var applyToAllElements = __webpack_require__(/*! ../../../../../_common/utility */ "./src/javascript/_common/utility.js").applyToAllElements;
 
 var AccountClosure = function () {
-    var form_selector = '#form_closure';
-    var $form = void 0,
-        $txt_other_reason = void 0,
-        $closure_loading = void 0,
-        $submit_loading = void 0,
-        $closure_container = void 0,
-        $trading_limit = void 0,
-        $real_unset = void 0,
-        $fiat_1 = void 0,
-        $fiat_2 = void 0,
-        $crypto_1 = void 0,
-        $crypto_2 = void 0,
-        $virtual = void 0,
-        $success_msg = void 0,
-        $error_msg = void 0;
+    var reason_checkbox_list = void 0,
+        selected_reasons = void 0,
+        el_form_closure_step_1 = void 0,
+        el_step_2_back = void 0,
+        el_step_2_submit = void 0,
+        el_dialog_container = void 0,
+        el_account_closure_warning = void 0,
+        el_account_closure_error = void 0,
+        el_closure_loading = void 0,
+        el_error_msg = void 0,
+        el_other_trading_platforms = void 0,
+        el_suggested_improves = void 0,
+        el_remain_characters = void 0,
+        el_remain_characters_warning = void 0,
+        el_deacivate_button = void 0,
+        el_error_no_selection = void 0,
+        el_submit_loading = void 0;
+
+    var number_of_steps = 3;
+    var max_reason_length = 250;
+    selected_reasons = '';
 
     var onLoad = function onLoad() {
-        $txt_other_reason = $('#other_reason');
-        $closure_loading = $('#closure_loading');
-        $submit_loading = $('#submit_loading');
-        $closure_container = $('#closure_container');
-        $success_msg = $('#msg_main');
-        $error_msg = $('#msg_form');
-        $trading_limit = $('.trading_limit');
-        $virtual = $('.virtual');
-        $crypto_1 = $('.crypto_1');
-        $crypto_2 = $('.crypto_2');
-        $real_unset = $('.real_unset');
-        $fiat_1 = $('.fiat_1');
-        $fiat_2 = $('.fiat_2');
-        $form = $(form_selector);
+        reason_checkbox_list = document.getElementsByName('reason-checkbox');
+        el_dialog_container = getElementById('dialog_container');
+        el_form_closure_step_1 = getElementById('form_closure_step_1');
+        el_step_2_back = getElementById('step_2_back');
+        el_step_2_submit = getElementById('step_2_submit');
+        el_other_trading_platforms = getElementById('other_trading_platforms');
+        el_suggested_improves = getElementById('suggested_improves');
+        el_remain_characters = getElementById('remain_characters');
+        el_remain_characters_warning = getElementById('remain_characters_warning');
+        el_account_closure_warning = getElementById('account_closure_warning');
+        el_account_closure_error = getElementById('account_closure_error');
+        el_closure_loading = getElementById('closure_loading');
+        el_deacivate_button = getElementById('deactivate');
+        el_error_msg = getElementById('error_msg');
+        el_error_no_selection = getElementById('error_no_selection');
+        el_submit_loading = getElementById('submit_loading');
 
-        $closure_loading.setVisibility(1);
+        el_closure_loading.setVisibility(1);
+        var hideDialogs = function hideDialogs() {
+            el_account_closure_warning.setVisibility(0);
+            el_account_closure_error.setVisibility(0);
+        };
+        hideDialogs();
 
-        var is_virtual = !hasAccountType('real');
-        var is_svg = Client.get('landing_company_shortcode') === 'svg';
-        var has_trading_limit = hasAccountType('real');
-        var is_real_unset = hasOnlyCurrencyType('unset');
-        var is_fiat = hasOnlyCurrencyType('fiat');
-        var is_crypto = hasOnlyCurrencyType('crypto');
-        var is_both = hasCurrencyType('fiat') && hasCurrencyType('crypto');
-        var current_email = Client.get('email');
-        var current_currency = Client.get('currency');
-
-        BinarySocket.wait('landing_company').then(function (response) {
-            var currencies = getAllCurrencies(response.landing_company);
-            var other_currencies = getCurrenciesOfOtherAccounts(true);
-
-            if (is_virtual) {
-                $virtual.setVisibility(1);
-                currencies.forEach(function (currency) {
-                    $virtual.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                });
-            } else {
-                if (has_trading_limit) {
-                    $trading_limit.setVisibility(1);
-                    $('#closing_steps').setVisibility(1);
-                }
-                if (is_real_unset) {
-                    $real_unset.setVisibility(1);
-                    $trading_limit.setVisibility(0);
-                    currencies.forEach(function (currency) {
-                        var is_allowed = true;
-                        other_currencies.forEach(function (other_currency) {
-                            if (currency === other_currency) {
-                                is_allowed = false;
-                            }
-                        });
-                        if (is_allowed) {
-                            $real_unset.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                        }
-                    });
-                }
-                if (is_fiat) {
-                    $fiat_1.setVisibility(1);
-                    if (is_svg) {
-                        $fiat_2.setVisibility(1);
-                    }
-
-                    var fiat_currency = Client.get('currency');
-
-                    if (Client.get('is_virtual')) {
-                        other_currencies.forEach(function (currency) {
-                            if (!isCryptocurrency(currency)) {
-                                fiat_currency = currency;
-                            }
-                        });
-                    }
-
-                    $('#current_currency_fiat').text(fiat_currency);
-                    $('.current_currency').text(fiat_currency);
-
-                    currencies.forEach(function (currency) {
-                        var is_allowed = true;
-                        other_currencies.forEach(function (other_currency) {
-                            if (currency === other_currency) {
-                                is_allowed = false;
-                            }
-                        });
-                        if (is_allowed) {
-                            if (isCryptocurrency(currency)) {
-                                $fiat_2.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                            } else {
-                                $fiat_1.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                            }
-                        }
-                    });
-                }
-
-                if (is_crypto) {
-                    $crypto_1.setVisibility(1);
-                    if (is_svg) {
-                        $crypto_2.setVisibility(1);
-                    }
-
-                    var crypto_currencies = '';
-                    var has_all_crypto = true;
-                    var crypto_numbers = 0;
-
-                    if (!Client.get('is_virtual')) {
-                        crypto_currencies = Client.get('currency');
-                        crypto_numbers++;
-                    }
-
-                    other_currencies.forEach(function (currency) {
-                        if (isCryptocurrency(currency)) {
-                            crypto_numbers++;
-                            if (!crypto_currencies) {
-                                crypto_currencies += currency;
-                            } else {
-                                crypto_currencies += ', ' + currency;
-                            }
-                        }
-                    });
-
-                    if (crypto_numbers > 1) {
-                        crypto_currencies += ' ' + localize('accounts');
-                    } else {
-                        crypto_currencies += ' ' + localize('account');
-                    }
-
-                    $('.current_currency').text(crypto_currencies);
-                    $('#current_currency_crypto').text(crypto_currencies);
-                    currencies.forEach(function (currency) {
-                        var is_allowed = true;
-                        other_currencies.forEach(function (other_currency) {
-                            if (currency === other_currency) {
-                                is_allowed = false;
-                            }
-                        });
-                        if (is_allowed) {
-                            if (isCryptocurrency(currency)) {
-                                has_all_crypto = false;
-                                $crypto_2.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                            } else {
-                                $crypto_1.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                            }
-                        }
-                    });
-
-                    if (has_all_crypto) {
-                        $crypto_2.setVisibility(0);
-                    }
-                }
-
-                if (is_both) {
-                    $fiat_1.setVisibility(1);
-                    if (is_svg) {
-                        $crypto_2.setVisibility(1);
-                    }
-
-                    var _crypto_currencies = '';
-                    var _has_all_crypto = true;
-                    var _crypto_numbers = 0;
-
-                    if (isCryptocurrency(current_currency)) {
-                        _crypto_currencies = Client.get('currency');
-                        _crypto_numbers++;
-                        other_currencies.forEach(function (currency) {
-                            if (isCryptocurrency(currency)) {
-                                _crypto_currencies += ', ' + currency;
-                                _crypto_numbers++;
-                            } else {
-                                $('#current_currency_fiat').text(currency);
-                                $('.current_currency').text(currency);
-                            }
-                        });
-                        if (_crypto_numbers > 1) {
-                            _crypto_currencies += ' ' + localize('accounts');
-                        } else {
-                            _crypto_currencies += ' ' + localize('account');
-                        }
-                        $('#current_currency_crypto').text(_crypto_currencies);
-                    } else {
-                        var _fiat_currency = '';
-
-                        if (Client.get('is_virtual')) {
-                            other_currencies.forEach(function (currency) {
-                                if (isCryptocurrency(currency)) {
-                                    _crypto_numbers++;
-                                    if (!_crypto_currencies) {
-                                        _crypto_currencies += currency;
-                                    } else {
-                                        _crypto_currencies += ', ' + currency;
-                                    }
-                                } else {
-                                    _fiat_currency = currency;
-                                    // eslint-disable-next-line
-                                    if (Client.get('is_virtual')) {
-                                        _fiat_currency = currency;
-                                    } else {
-                                        _fiat_currency = current_currency;
-                                    }
-                                }
-                            });
-                        } else {
-                            other_currencies.forEach(function (currency) {
-                                if (isCryptocurrency(currency)) {
-                                    _crypto_numbers++;
-                                    if (!_crypto_currencies) {
-                                        _crypto_currencies += currency;
-                                    } else {
-                                        _crypto_currencies += ', ' + currency;
-                                    }
-                                }
-                            });
-
-                            _fiat_currency = current_currency;
-                        }
-
-                        if (_crypto_numbers > 1) {
-                            _crypto_currencies += ' ' + localize('accounts');
-                        } else {
-                            _crypto_currencies += ' ' + localize('account');
-                        }
-
-                        $('#current_currency_fiat').text(_fiat_currency);
-                        $('.current_currency').text(_fiat_currency);
-                        $('#current_currency_crypto').text(_crypto_currencies);
-                    }
-
-                    currencies.forEach(function (currency) {
-                        var is_allowed = true;
-                        other_currencies.forEach(function (other_currency) {
-                            if (currency === other_currency) {
-                                is_allowed = false;
-                            }
-                        });
-                        if (is_allowed) {
-                            if (isCryptocurrency(currency)) {
-                                _has_all_crypto = false;
-                                $crypto_2.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                            } else {
-                                $fiat_1.find('ul').append('<li>' + Currency.getCurrencyFullName(currency) + '</li>');
-                            }
-                        }
-                    });
-
-                    if (_has_all_crypto) {
-                        $crypto_2.setVisibility(0);
-                    }
-                }
-
+        var has_virtual_only = !hasAccountType('real');
+        BinarySocket.wait('landing_company').then(function () {
+            if (!has_virtual_only) {
                 BinarySocket.send({ statement: 1, limit: 1 });
                 BinarySocket.wait('landing_company', 'get_account_status', 'statement').then(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
                     var is_eligible;
@@ -30166,7 +29914,9 @@ var AccountClosure = function () {
                                     is_eligible = _context.sent;
 
                                     if (is_eligible) {
-                                        $('.metatrader-link').setVisibility(1);
+                                        applyToAllElements('.metatrader-link', function (element) {
+                                            element.setVisibility(1);
+                                        });
                                     }
 
                                 case 4:
@@ -30177,162 +29927,241 @@ var AccountClosure = function () {
                     }, _callee, undefined);
                 })));
             }
-
-            $('#current_email').text(current_email);
-            $closure_loading.setVisibility(0);
-
-            $closure_container.setVisibility(1);
+            el_closure_loading.setVisibility(0);
+            showStep(1);
         }).catch(function (error) {
             showFormMessage(error.message);
-            $closure_loading.setVisibility(0);
-            $closure_container.setVisibility(1);
+            el_closure_loading.setVisibility(0);
         });
 
-        $('#closure_accordion').accordion({
-            heightStyle: 'content',
-            collapsible: true,
-            active: true
-        });
-        var $account_closure_warning = $('#account_closure_warning');
-        var $account_closure_error = $('#account_closure_error');
-
-        var hideDialogs = function hideDialogs() {
-            $account_closure_warning.setVisibility(0);
-            $account_closure_error.setVisibility(0);
-        };
-
-        hideDialogs();
-
-        $('.back').on('click', function () {
-            hideDialogs();
+        var modal_back_items = document.getElementsByClassName('modal-back');
+        Array.from(modal_back_items).forEach(function (item) {
+            item.addEventListener('click', function () {
+                hideDialogs();
+            });
         });
 
-        $('#deactivate').on('click', function () {
-            $account_closure_warning.setVisibility(0);
-            submitForm($account_closure_error);
+        el_dialog_container.setVisibility(1);
+
+        el_deacivate_button.addEventListener('click', function () {
+            el_account_closure_warning.setVisibility(0);
+            deactivate();
         });
 
-        $(form_selector).on('submit', function (event) {
-            event.preventDefault();
-            if (getReason()) {
-                $account_closure_warning.setVisibility(1);
+        el_form_closure_step_1.addEventListener('submit', function (e) {
+            e.preventDefault();
+            showStep(2);
+        });
+
+        el_step_2_submit.addEventListener('click', function (e) {
+            if (!el_step_2_submit.classList.contains('button-disabled')) {
+                e.preventDefault();
+                el_account_closure_warning.setVisibility(1);
             }
         });
 
-        $txt_other_reason.setVisibility(0);
-
-        $txt_other_reason.on('keyup', function () {
-            var input = $txt_other_reason.val();
-            if (input && validateReasonTextField(false)) {
-                $txt_other_reason.removeClass('error-field');
-                $error_msg.css('display', 'none');
-            }
+        el_step_2_back.addEventListener('click', function () {
+            showStep(1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-        $('#reason input[type=radio]').on('change', function (e) {
-            var value = e.target.value;
 
+        reason_checkbox_list.forEach(function (element) {
+            element.addEventListener('change', function () {
+                onSelectedReasonChange();
+            });
+        });
 
-            if (value === 'other') {
-                $txt_other_reason.setVisibility(1);
-            } else {
-                $txt_other_reason.setVisibility(0);
-                $txt_other_reason.removeClass('error-field');
-                $txt_other_reason.val('');
-                $error_msg.css('display', 'none');
-            }
+        el_suggested_improves.addEventListener('keydown', onKeyDown);
+        el_other_trading_platforms.addEventListener('keydown', onKeyDown);
+
+        el_suggested_improves.addEventListener('input', onTextChanged);
+        el_other_trading_platforms.addEventListener('input', onTextChanged);
+    };
+
+    var showStep = function showStep(step) {
+        Array.from(new Array(number_of_steps)).forEach(function (_, index) {
+            getElementById('step_' + (index + 1)).setVisibility(index + 1 === step);
         });
     };
 
-    var submitForm = function submitForm($account_closure_error) {
-        var $btn_submit = $form.find('#btn_submit');
-        $submit_loading.setVisibility(1);
-        $btn_submit.attr('disabled', true);
+    var regex = new RegExp('^[a-zA-Z0-9., \'-]+$');
+    var delete_key_codes = [8, 46];
+    var last_key_code = null;
 
-        var data = { account_closure: 1, reason: getReason() };
-        BinarySocket.send(data).then(function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(response) {
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                    while (1) {
-                        switch (_context2.prev = _context2.next) {
-                            case 0:
-                                if (!response.error) {
-                                    _context2.next = 12;
-                                    break;
-                                }
-
-                                $submit_loading.setVisibility(0);
-
-                                if (!response.error.details) {
-                                    _context2.next = 8;
-                                    break;
-                                }
-
-                                _context2.next = 5;
-                                return showErrorPopUp(response, $account_closure_error);
-
-                            case 5:
-                                $account_closure_error.setVisibility(1);
-                                _context2.next = 9;
-                                break;
-
-                            case 8:
-                                showFormMessage(response.error.message || localize('Sorry, an error occurred while processing your request.'));
-
-                            case 9:
-                                $btn_submit.attr('disabled', false);
-                                _context2.next = 18;
-                                break;
-
-                            case 12:
-                                $submit_loading.setVisibility(0);
-                                $closure_container.setVisibility(0);
-                                $success_msg.setVisibility(1);
-                                $.scrollTo(0, 500);
-
-                                sessionStorage.setItem('closingAccount', 1);
-                                setTimeout(function () {
-                                    // we need to clear all stored client data by performing a logout action and then redirect to home
-                                    // otherwise it will think that client is still logged in and redirect to trading page
-                                    Client.sendLogoutRequest(false, Url.urlFor('home'));
-                                }, 10000);
-
-                            case 18:
-                            case 'end':
-                                return _context2.stop();
-                        }
-                    }
-                }, _callee2, undefined);
-            }));
-
-            return function (_x) {
-                return _ref2.apply(this, arguments);
-            };
-        }());
+    var onKeyDown = function onKeyDown(e) {
+        last_key_code = e.keyCode;
     };
 
-    var showErrorPopUp = function () {
-        var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(response, $account_closure_error) {
-            var mt5_login_list, $parent, section_id, display_name, addSection, getMTDisplay;
+    var onTextChanged = function onTextChanged(e) {
+        var remaining_length = max_reason_length - getReason().length;
+        if ((!regex.test(e.data) || remaining_length < 0) && !delete_key_codes.includes(last_key_code)) {
+            var changed_element = getElementById(e.target.id);
+            changed_element.value = changed_element.value.slice(0, -1);
+        }
+        validateReason();
+    };
+
+    var getSelectedReasonCount = function getSelectedReasonCount() {
+        return Array.from(reason_checkbox_list).filter(function (el) {
+            return el.checked;
+        }).length;
+    };
+
+    var onSelectedReasonChange = function onSelectedReasonChange() {
+        var num_selected_reasons = getSelectedReasonCount();
+        el_step_2_submit.classList[num_selected_reasons > 0 ? 'remove' : 'add']('button-disabled');
+        el_error_no_selection.setVisibility(num_selected_reasons > 0 ? 0 : 1);
+        if (num_selected_reasons >= 3) {
+            reason_checkbox_list.forEach(function (reason) {
+                if (!reason.checked) {
+                    reason.disabled = true;
+                    reason.classList.add('disable');
+                }
+            });
+        } else {
+            reason_checkbox_list.forEach(function (reason) {
+                reason.disabled = false;
+            });
+        }
+        var reasons = [];
+        reason_checkbox_list.forEach(function (reason) {
+            if (reason.checked) {
+                reasons.push(getLabelTextOfCheckBox(reason.id));
+            }
+        });
+        selected_reasons = reasons.toString();
+        validateReason();
+    };
+
+    var deactivate = function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+            var data;
             return regeneratorRuntime.wrap(function _callee3$(_context3) {
                 while (1) {
                     switch (_context3.prev = _context3.next) {
                         case 0:
-                            _context3.next = 2;
+                            el_submit_loading.setVisibility(1);
+                            el_step_2_submit.setAttribute('disabled', true);
+
+                            data = { account_closure: 1, reason: getReason() };
+
+                            BinarySocket.send(data).then(function () {
+                                var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(response) {
+                                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                                        while (1) {
+                                            switch (_context2.prev = _context2.next) {
+                                                case 0:
+                                                    if (!response.error) {
+                                                        _context2.next = 12;
+                                                        break;
+                                                    }
+
+                                                    el_submit_loading.setVisibility(0);
+
+                                                    if (!response.error.details) {
+                                                        _context2.next = 8;
+                                                        break;
+                                                    }
+
+                                                    _context2.next = 5;
+                                                    return showErrorPopUp(response);
+
+                                                case 5:
+                                                    el_account_closure_error.setVisibility(1);
+                                                    _context2.next = 9;
+                                                    break;
+
+                                                case 8:
+                                                    showFormMessage(response.error.message || localize('Sorry, an error occurred while processing your request.'));
+
+                                                case 9:
+                                                    el_step_2_submit.setAttribute('disabled', false);
+                                                    _context2.next = 17;
+                                                    break;
+
+                                                case 12:
+                                                    el_submit_loading.setVisibility(0);
+                                                    showStep(3);
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                                                    sessionStorage.setItem('closingAccount', 1);
+                                                    setTimeout(function () {
+                                                        // we need to clear all stored client data by performing a logout action and then redirect to home
+                                                        // otherwise it will think that client is still logged in and redirect to trading page
+                                                        Client.sendLogoutRequest(false, Url.urlFor('home'));
+                                                    }, 10000);
+
+                                                case 17:
+                                                case 'end':
+                                                    return _context2.stop();
+                                            }
+                                        }
+                                    }, _callee2, undefined);
+                                }));
+
+                                return function (_x) {
+                                    return _ref3.apply(this, arguments);
+                                };
+                            }());
+
+                        case 4:
+                        case 'end':
+                            return _context3.stop();
+                    }
+                }
+            }, _callee3, undefined);
+        }));
+
+        return function deactivate() {
+            return _ref2.apply(this, arguments);
+        };
+    }();
+
+    var showErrorPopUp = function () {
+        var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(response) {
+            var mt5_login_list, previous_parent, el_parent, section_id, display_name, addSection, getMTDisplay;
+            return regeneratorRuntime.wrap(function _callee4$(_context4) {
+                while (1) {
+                    switch (_context4.prev = _context4.next) {
+                        case 0:
+                            _context4.next = 2;
                             return BinarySocket.wait('mt5_login_list');
 
                         case 2:
-                            mt5_login_list = _context3.sent.mt5_login_list;
+                            mt5_login_list = _context4.sent.mt5_login_list;
 
                             // clear all previously added details first
-                            $account_closure_error.find('.account-closure-details').remove();
-                            $parent = $('<div/>', { class: 'gr-padding-10 gr-child account-closure-details' });
+                            previous_parent = document.getElementsByClassName('account-closure-details');
+
+                            if (previous_parent) {
+                                Array.from(previous_parent).forEach(function (item) {
+                                    item.parentNode.removeChild(item);
+                                });
+                            }
+                            el_parent = document.createElement('div');
+
+                            el_parent.className = 'gr-padding-10 gr-child account-closure-details';
                             section_id = '';
                             display_name = '';
 
                             addSection = function addSection(account, info) {
-                                var $section = $parent.clone();
-                                $section.append($('<div />').append($('<strong />', { text: display_name })).append($('<div />', { text: account.replace(/^MT[DR]?/i, '') }))).append($('<span />', { text: info }));
-                                $account_closure_error.find(section_id).setVisibility(1).append($section);
+                                var el_section_parent = el_parent.cloneNode(true);
+
+                                var el_strong = document.createElement('strong');
+                                el_strong.innerHTML = display_name;
+                                var el_inner_div = document.createElement('div');
+                                el_inner_div.innerHTML = account.replace(/^MT[DR]?/i, '');
+                                var el_span = document.createElement('span');
+                                el_span.innerHTML = info;
+
+                                var el_div = document.createElement('div');
+                                el_div.appendChild(el_strong);
+                                el_div.appendChild(el_inner_div);
+                                el_section_parent.appendChild(el_div);
+                                el_section_parent.appendChild(el_span);
+
+                                var el_section = getElementById(section_id);
+                                el_section.setVisibility(1).appendChild(el_section_parent);
                             };
 
                             getMTDisplay = function getMTDisplay(account) {
@@ -30347,11 +30176,11 @@ var AccountClosure = function () {
                                 Object.keys(response.error.details.open_positions).forEach(function (account) {
                                     var txt_positions = response.error.details.open_positions[account] + ' position(s)';
                                     if (/^MT/.test(account)) {
-                                        section_id = '#account_closure_open_mt';
+                                        section_id = 'account_closure_open_mt';
                                         display_name = getMTDisplay(account);
                                     } else {
-                                        section_id = '#account_closure_open';
-                                        display_name = Client.get('currency', account);
+                                        section_id = 'account_closure_open';
+                                        display_name = Currency.getCurrencyName(Client.get('currency', account));
                                     }
                                     addSection(account, txt_positions);
                                 });
@@ -30360,71 +30189,65 @@ var AccountClosure = function () {
                                 Object.keys(response.error.details.balance).forEach(function (account) {
                                     var txt_balance = response.error.details.balance[account].balance + ' ' + response.error.details.balance[account].currency;
                                     if (/^MT/.test(account)) {
-                                        section_id = '#account_closure_balance_mt';
+                                        section_id = 'account_closure_balance_mt';
                                         display_name = getMTDisplay(account);
                                     } else {
-                                        section_id = '#account_closure_balance';
+                                        section_id = 'account_closure_balance';
                                         display_name = Currency.getCurrencyName(response.error.details.balance[account].currency);
                                     }
                                     addSection(account, txt_balance);
                                 });
                             }
 
-                        case 11:
+                        case 13:
                         case 'end':
-                            return _context3.stop();
+                            return _context4.stop();
                     }
                 }
-            }, _callee3, undefined);
+            }, _callee4, undefined);
         }));
 
-        return function showErrorPopUp(_x2, _x3) {
-            return _ref3.apply(this, arguments);
+        return function showErrorPopUp(_x2) {
+            return _ref4.apply(this, arguments);
         };
     }();
 
-    var showFormMessage = function showFormMessage(localized_msg, scroll_on_error) {
-        if (scroll_on_error) $.scrollTo($('#reason'), 500, { offset: -20 });
-        $error_msg.attr('class', 'errorfield').html(localized_msg).css('display', 'block');
+    var showFormMessage = function showFormMessage(localized_msg) {
+        el_error_msg.setAttribute('class', 'errorfield');
+        el_error_msg.innerHTML = localized_msg;
+        el_error_msg.style.display = 'block';
     };
 
-    var validateReasonTextField = function validateReasonTextField(scroll_on_error) {
-        var other_reason_input = $txt_other_reason.val();
-
-        if (!other_reason_input) {
-            $txt_other_reason.addClass('error-field');
-            showFormMessage(localize('Please specify the reasons for closing your accounts'), scroll_on_error);
-            return false;
-        } else if (other_reason_input.length < 5 || other_reason_input.length > 250) {
-            $txt_other_reason.addClass('error-field');
-            showFormMessage(localize('The reason should be between 5 and 250 characters'), scroll_on_error);
-            return false;
-        } else if (!/^[0-9A-Za-z .,'-]{5,250}$/.test(other_reason_input)) {
-            $txt_other_reason.addClass('error-field');
-            showFormMessage(localize('Only letters, numbers, space, hyphen, period, comma, and apostrophe are allowed.'), scroll_on_error);
-            return false;
+    var getLabelTextOfCheckBox = function getLabelTextOfCheckBox(checkbox_id) {
+        var labels = document.getElementsByTagName('LABEL');
+        for (var i = 0; i < labels.length; i++) {
+            if (labels[i].htmlFor === checkbox_id) {
+                return labels[i].textContent;
+            }
         }
-        return true;
+        return '';
+    };
+
+    var validateReason = function validateReason() {
+        var remaining_length = max_reason_length - getReason().length;
+        el_remain_characters.innerHTML = localize('Remaining characters: [_1].', (remaining_length < 0 ? 0 : remaining_length).toString());
+        if (remaining_length < 0) {
+            var warning_error = localize('Please enter no more than [_1] characters for both fields.', max_reason_length - selected_reasons.length);
+            el_remain_characters_warning.innerHTML = warning_error;
+            el_remain_characters_warning.setVisibility(1);
+        } else el_remain_characters_warning.setVisibility(0);
+        el_step_2_submit.classList[remaining_length < 0 || selected_reasons.length === 0 ? 'add' : 'remove']('button-disabled');
     };
 
     var getReason = function getReason() {
-        var $selected_reason = $('#reason input[type=radio]:checked');
-        var reason_radio_val = $selected_reason.val();
-        var reason_radio_id = $selected_reason.attr('id');
-        var reason_radio_text = $('label[for=' + reason_radio_id + ']').text();
-        var other_reason_input = $txt_other_reason.val();
-
-        if (reason_radio_val) {
-            if (reason_radio_val === 'other') {
-                if (validateReasonTextField(true)) {
-                    return other_reason_input;
-                }
-                return false;
-            }
-            return reason_radio_text;
+        var reason_string = selected_reasons;
+        if (el_other_trading_platforms.value.length !== 0) {
+            reason_string += ',' + el_other_trading_platforms.value;
         }
-        showFormMessage(localize('Please select a reason.'));
-        return false;
+        if (el_suggested_improves.value.length !== 0) {
+            reason_string += ',' + el_suggested_improves.value;
+        }
+        return reason_string;
     };
 
     return {
@@ -31505,8 +31328,6 @@ var PersonalDetails = function () {
 
     var showHideTaxMessage = function showHideTaxMessage() {
         var $tax_info_declaration = $('#tax_information_declaration');
-        var $tax_information_info = $('#tax_information_info');
-
         if (Client.shouldCompleteTax()) {
             $('#tax_information_note_toggle').off('click').on('click', function (e) {
                 e.stopPropagation();
@@ -31514,7 +31335,6 @@ var PersonalDetails = function () {
                 $('#tax_information_note').slideToggle();
             });
         } else {
-            $tax_information_info.setVisibility(0); // hide tax info
             $tax_info_declaration.setVisibility(0); // hide tax info declaration
         }
     };
@@ -31565,7 +31385,8 @@ var PersonalDetails = function () {
 
         var is_changeable_citizen = !get_settings.immutable_fields.includes('citizen');
         var is_changeable_pob = !get_settings.immutable_fields.includes('place_of_birth');
-        if (is_changeable_pob || is_changeable_citizen) {
+        var is_changeable_tax = !get_settings.immutable_fields.includes('tax_residence');
+        if (is_changeable_pob || is_changeable_citizen || is_changeable_tax) {
             var $options = $('<div/>');
             var residence_list = State.getResponse('residence_list');
             residence_list.forEach(function (res) {
@@ -31578,6 +31399,9 @@ var PersonalDetails = function () {
 
             if (is_changeable_citizen) {
                 $('#citizen').html($options.html()).val(get_settings.citizen);
+            }
+            if (is_changeable_tax) {
+                $('#tax_residence').html($options.html()).val(get_settings.tax_residence);
             }
         }
     };
@@ -31608,6 +31432,11 @@ var PersonalDetails = function () {
                 return obj.value === get_settings.citizen;
             }) || {}).text || get_settings.citizen;
         }
+        if (get_settings.tax_residence && get_settings.immutable_fields.includes('tax_residence') && residence_list) {
+            get_settings.tax_residence = (residence_list.find(function (obj) {
+                return obj.value === get_settings.tax_residence;
+            }) || {}).text || get_settings.tax_residence;
+        }
 
         displayGetSettingsData(get_settings);
 
@@ -31617,7 +31446,6 @@ var PersonalDetails = function () {
             displayChangeableFields(data);
             $(real_acc_elements).setVisibility(1);
             showHideTaxMessage();
-            CommonFunctions.getElementById('tax_information_form').setVisibility(shouldShowTax(get_settings));
             if (is_fully_authenticated) {
                 $(real_acc_auth_elements).setVisibility(1);
             }
@@ -31830,7 +31658,7 @@ var PersonalDetails = function () {
                 if (residence) {
                     if (shouldShowTax(get_settings_data)) {
                         $tax_residence = $('#tax_residence');
-                        $tax_residence.html($options_with_disabled.html()).promise().done(function () {
+                        $tax_residence.html($options.html()).promise().done(function () {
                             setTimeout(function () {
                                 var residence_value = get_settings_data.tax_residence ? get_settings_data.tax_residence.split(',') : residence || '';
                                 $tax_residence.select2().val(residence_value).trigger('change').setVisibility(1);
@@ -36611,6 +36439,11 @@ var RealAccOpening = function () {
                     form_selector: form_id,
                     obj_request: { new_account_real: 1 },
                     fnc_response_handler: handleResponse
+                });
+                $('#tax_information_note_toggle').off('click').on('click', function (e) {
+                    e.stopPropagation();
+                    $('#tax_information_note_toggle').toggleClass('open');
+                    $('#tax_information_note').slideToggle();
                 });
             });
         } else {
