@@ -12014,7 +12014,7 @@ var Page = function () {
 
         Cookies.set('affiliate_tracking', cookie_hash, {
             expires: 365, // expires in 365 days
-            path: '/',
+            // path    : '/',
             domain: '.' + location.hostname.split('.').slice(-2).join('.'),
             sameSite: 'none',
             secure: true
