@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: binary-static\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-06-02 07:58\n"
+"PO-Revision-Date: 2021-06-15 06:35\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "MIME-Version: 1.0\n"
@@ -436,6 +436,9 @@ msgstr "%1 系统每天处理超过百万笔交易（包括虚拟账户）。"
 msgid "%124/7 customer support%2 to enhance your trading experience"
 msgstr "%1提供全天候客户支持服务%2以增强您的交易体验"
 
+msgid "%1CFD%2"
+msgstr "%1差价合约%2"
+
 msgid "%1Contact us%2 to arrange a date and time for the video call."
 msgstr "%1联系我们%2 安排视频通话日期和时间。"
 
@@ -444,6 +447,9 @@ msgstr "%1Deriv-Demo%2 如您的信号仅适用于演示账户。"
 
 msgid "%1Deriv-Server%2 or %1Deriv-Server-02%2 if your signals is for real accounts only."
 msgstr "%1Deriv-Server%2 或 %1Deriv-Server-02%2 如您的信号仅适用于真实账户。"
+
+msgid "%1Digital Options%1"
+msgstr "%1数字期权%1"
 
 msgid "%1Founded%2 October 1999"
 msgstr "%1成立于%2 1999年十月"
@@ -454,8 +460,14 @@ msgstr "%1根据马恩岛法律的强制规定，Deriv (MX) Ltd 的客户必须�
 msgid "%1Manage your accounts%2"
 msgstr "%1管理您的账户%2"
 
+msgid "%1Maximise returns%2 by %3risking more%4 than you put in."
+msgstr "比投注金额%3更大的亏损风险%4可能获取%1最大的回报%2。"
+
 msgid "%1No, change my fiat account's currency now%2"
 msgstr "%1不，请立刻更改我的法定账户的币种%2"
+
+msgid "%1Not Sure?%1"
+msgstr "%1不确定？%1"
 
 msgid "%1Note:%2 For a wider selection of signal providers, go to %3MQL5 showcase page%4 and search for Deriv under the Broker server field."
 msgstr "%1注意：%2要查看更多信号提供者的选择，请转到%3MQL5展示页面%4，然后在经纪商服务器字段下搜索Deriv。"
@@ -1010,7 +1022,7 @@ msgid "Account Closure"
 msgstr "账户关闭"
 
 msgid "Account Deactivated"
-msgstr ""
+msgstr "账户已停用"
 
 msgid "Account Deposit Currency"
 msgstr "账户存款币种"
@@ -2186,10 +2198,10 @@ msgid "Binary options trading frequency"
 msgstr "二元期权交易频率"
 
 msgid "Binary options trading is not available in your country."
-msgstr ""
+msgstr "您的国家无法进行二元期权交易。"
 
 msgid "Binary options trading is not available in your financial account."
-msgstr ""
+msgstr "您的金融账户无法进行二元期权交易。"
 
 msgid "Binary options trading is relatively easy. You can purchase a contract in just three steps:"
 msgstr "相对说来，二元期权交易是很容易的。 您可以通过三个简单步骤购买合约："
@@ -4256,6 +4268,9 @@ msgstr "每次转账需支付%1转账费或最低费用%2, 以较高者为准。
 msgid "Earn"
 msgstr "赚取"
 
+msgid "Earn %1fixed returns%2 by %3risking only%4 what you put in."
+msgstr "%3亏损风险仅限于%4您的投注金额，但可能赢取%1f固定的回报%2。"
+
 msgid "Earn 100 USD in commission for each successful referral. Your referred client must open a %1real account%2 through your unique affiliate link and deposit a total of 100 USD or more (one-time or accumulative) in the account. This commission plan is only available for clients based in the EU."
 msgstr "每次推荐成功可获得100美元佣金。您推荐的客户必须通过您专用的联盟链接开立 %1真实账户%2, 并在账户中存入总计100美元或更多 (一次性或累计) 的资金。该佣金计划仅适用于欧盟区的客户。"
 
@@ -6041,6 +6056,9 @@ msgstr "如您有 MT5 真实账户，请登录以便将全部持仓头寸平仓�
 msgid "If you have a payment reference (for example 122), you can enter it here."
 msgstr "如有付款参考编号（例如122），可在此处输入。"
 
+msgid "If you have an account with us, we'll send you a link to your email in a few minutes to reset your password."
+msgstr "如您已在我们的平台拥有账户，我们将于数分钟内给您发送内含链接的电子邮件，以便重置密码。"
+
 msgid "If you keep any positions open overnight, an interest adjustment will be made to your trading account as indication of the cost required to keep your position open."
 msgstr "如果您持仓隔夜，需付持仓费。此费用将以利息名义在您的交易账户中扣除。"
 
@@ -6896,6 +6914,9 @@ msgstr "少于$100,000"
 
 msgid "Less than $25,000"
 msgstr "少于$25,000"
+
+msgid "Let us introduce you to trading on Binary."
+msgstr "让我们推荐您开始在 Binary 交易。"
 
 msgid "Let's calculate the spread for EUR/USD:"
 msgstr "让我们计算欧元/美元的价差:"
@@ -8445,6 +8466,9 @@ msgstr "PEP声明"
 msgid "PM"
 msgstr "下午"
 
+msgid "Page not available, you did not deactivate your account."
+msgstr "页面不可用，您没有停用账户。"
+
 msgid "Palladium vs US dollar"
 msgstr "钯金兑美元"
 
@@ -8744,9 +8768,6 @@ msgstr "请查看您的电子邮件以便了解详情"
 
 msgid "Please check your email for further instructions."
 msgstr "请检查您的电子邮件收取详细说明。"
-
-msgid "Please check your email for the password reset link."
-msgstr "请检查您的电子邮件领取密码重设链接."
 
 msgid "Please check your email for the verification code to complete the process."
 msgstr "请检查您的电子邮件领取验证码以完成此程序。"
@@ -12578,7 +12599,7 @@ msgid "This document (the \"Agreement\") sets out the terms and conditions betwe
 msgstr "本文件（“协议”）规定了“公司”（即 Deriv Services Ltd.）与本项目申请人（“联盟会员”）之间关于联盟会员申请设立联盟会员账户（申请成功后还包括联盟项目的会员资格）以推广网站的条款和条件。"
 
 msgid "This feature is available to virtual accounts only."
-msgstr ""
+msgstr "此功能仅适用于虚拟账户。"
 
 msgid "This feature is not relevant to virtual-money accounts."
 msgstr "此功能不适用于虚拟资金账户。"
@@ -12647,7 +12668,7 @@ msgid "This obligation encompasses the prohibition of unlawful payments or the g
 msgstr "这项义务包括禁止非法付款或向公职人员、业务伙伴、雇员、家庭成员或任何其他伙伴提供任何形式的非法利益。"
 
 msgid "This page is not available in your country of residence."
-msgstr ""
+msgstr "您的居住国无法使用此页面。"
 
 msgid "This page is only available to logged out clients."
 msgstr "此页面仅适用于已登出的客户。"
@@ -14191,6 +14212,9 @@ msgstr "如果客户对公司的债务到期应付，公司将把相等于此债
 msgid "Where the negative balance is connected to or a result of functional limitations and/or malfunction of the MT5 trading platform"
 msgstr "负余额与MT5交易平台的功能限制和/或故障相关的结果"
 
+msgid "Where would you like to start?"
+msgstr "您想从哪里开始？"
+
 msgid "Where you can go"
 msgstr "您可以去哪里"
 
@@ -14443,8 +14467,8 @@ msgstr "您预计基础货币的价值会下跌，因此您可以以较低的价
 msgid "You are expecting the base currency to rise in value so you can sell it back for a profit."
 msgstr "您预计基础货币将升值，因此您可将其卖出赚取利润。"
 
-msgid "You are limited to one fiat account. You can change the currency of your fiat account anytime before you make a first-time deposit or create an MT5 account."
-msgstr "你只能用一个法定账户。首次存款或开立 MT5 账户之前, 您可以随时更改法定账户的币种。"
+msgid "You are limited to one fiat account. You can change the currency of your fiat account anytime before you make a first-time %1."
+msgstr ""
 
 msgid "You are responsible for mitigating the risks and abuse that we face from fraud and money laundering. To accomplish this, you must monitor, analyse, and conduct various anti-fraud and AML checks on client accounts and deposits. You will join us in Malta and report to our Head of Payments."
 msgstr "您将负责减低我们因欺诈和洗钱而面临的风险和弊端行为。为此，您必须对客户账户和存款进行各种反欺诈和反洗钱检查、分析和执行工作。您将在我们位于马耳他的公司工作，并向支付主管汇报。"
@@ -14452,8 +14476,8 @@ msgstr "您将负责减低我们因欺诈和洗钱而面临的风险和弊端行
 msgid "You are selling the base currency and buying the quote currency."
 msgstr "您正在卖出基本货币并买入报价货币。"
 
-msgid "You can %1set a new currency%2 before you deposit for the first time or create an MT5 account."
-msgstr "首次存款或开立 MT5 账户之前, 您可以 %1设定新币种%2。"
+msgid "You can %1set a new currency%2 before you deposit for the first %3."
+msgstr "首次%3存款之前, 您可以 %1设定新币种%2。"
 
 msgid "You can also decide to exclude yourself entirely from our website for a specified duration. Once the self-exclusion period has ended, you can either extend it further or resume trading immediately. If you wish to reduce or remove the self-exclusion period, contact our %1Customer Support%2."
 msgstr "您还可以决定在指定期限内完全禁止自己进入我们的网站。一旦禁止期限结束后，您可以进一步延长其期限或立即恢复交易。如果您希望缩短或删除自我禁止期限，请与我们的％1客户支持部％2联系。"
@@ -14756,7 +14780,7 @@ msgid "Your account is fully authenticated and your withdrawal limits have been 
 msgstr "您的账户已经得到完全验证，且您的取款限额已经取消。"
 
 msgid "Your account is now deactivated."
-msgstr ""
+msgstr "您的账户已停用。"
 
 msgid "Your account is now deactived."
 msgstr "您的账户已停用。"
@@ -14998,6 +15022,12 @@ msgstr "天"
 msgid "days"
 msgstr "天"
 
+msgid "deposit"
+msgstr ""
+
+msgid "deposit or create an MT5 account"
+msgstr ""
+
 msgid "details"
 msgstr "详情"
 
@@ -15108,6 +15138,12 @@ msgstr "跳动点"
 
 msgid "ticks"
 msgstr "跳动点"
+
+msgid "time"
+msgstr ""
+
+msgid "time or create an MT5 account"
+msgstr ""
 
 msgid "today"
 msgstr "今天"
