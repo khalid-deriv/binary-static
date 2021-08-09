@@ -41,7 +41,7 @@ const TrafficSource = (() => {
         initCookie();
         const data = cookie.value;
         Object.keys(data).map((key) => {
-            data[key] = (data[key] || '').replace(/[^a-zA-Z0-9\s-._]/gi, '').substring(0, 100);
+            data[key] = data[key];
         });
         return data;
     };
@@ -67,7 +67,7 @@ const TrafficSource = (() => {
     };
 
     // get source in order of precedence
-    const getSource = (utm_data = getData()) => utm_data.utm_source || utm_data.referrer || null;
+    const getSource = (utm_data = getData()) => utm_data.utm_source || document.referrer || null;
 
     const setData = () => {
         if (Client.isLoggedIn()) {
@@ -75,7 +75,7 @@ const TrafficSource = (() => {
             return;
         }
 
-        const new_values     = { utm_source: getSource() };
+        const new_values     = { utm_source: document.referrer || null };
         const current_values = getData();
         const params         = Url.paramsHash();
 
@@ -89,11 +89,12 @@ const TrafficSource = (() => {
         // Check if params has utm data
         if (shouldOverwrite(new_values, current_values)) {
             clearData();
+            console.log(cookie);
+            console.log(new_values);
             Object.keys(new_values).forEach((key) => {
-                if (new_values[key]) {
-                    cookie.set(key, new_values[key], { sameSite: 'none', secure: true });
-                }
+                cookie.set(key, new_values[key], { sameSite: 'none', secure: true });
             });
+            console.log(getData());
         }
 
         // Store gclid
