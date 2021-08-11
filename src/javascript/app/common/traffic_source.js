@@ -39,11 +39,7 @@ const TrafficSource = (() => {
 
     const getData = () => {
         initCookie();
-        const data = cookie.value;
-        Object.keys(data).map((key) => {
-            data[key] = data[key];
-        });
-        return data;
+        return cookie.value;
     };
 
     const shouldOverwrite = (new_utm_data, current_utm_data) => {
