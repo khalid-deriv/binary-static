@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const Client         = require('../base/client');
 const CookieStorage  = require('../../_common/storage').CookieStorage;
 const LocalStore     = require('../../_common/storage').LocalStore;
@@ -85,12 +84,9 @@ const TrafficSource = (() => {
         // Check if params has utm data
         if (shouldOverwrite(new_values, current_values)) {
             clearData();
-            console.log(cookie);
-            console.log(new_values);
             Object.keys(new_values).forEach((key) => {
                 cookie.set(key, new_values[key], { sameSite: 'none', secure: true });
             });
-            console.log(getData());
         }
 
         // Store gclid
