@@ -57,7 +57,8 @@ const TrafficSource = (() => {
             if (new_utm_data.utm_medium.includes('aff')) return true; // 1. Affiliate tags
             else if (new_utm_data.utm_medium.includes('ppc') && !current_utm_data.utm_medium.includes('aff')) return true; // 2. PPC tags
             else if (!current_utm_data.utm_medium.includes('ppc') && !current_utm_data.utm_medium.includes('aff')) return true; // 3. Complete set of required tags
-        } else if (Object.values(new_utm_data).length > Object.values(current_utm_data).length) return true; // 4. Everything else
+        } else if (new_utm_data.utm_source
+            || Object.values(new_utm_data).length >= Object.values(current_utm_data).length) return true; // 4. Everything else
         return false;
     };
 
