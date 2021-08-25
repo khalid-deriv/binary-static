@@ -106,7 +106,6 @@ const TrafficSource = (() => {
         setData,
         clearData,
         getSource,
-        utm_fields,
     };
 })();
 
