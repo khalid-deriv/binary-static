@@ -105,7 +105,7 @@ const VirtualAccOpening = (() => {
             { request_field: 'signup_device',       value: signup_device },
         ];
 
-        TrafficSource.utm_fields.forEach((field) => {
+        Object.keys(utm_data).forEach((field) => {
             if (utm_data[field]) req.push({ request_field: field, value: utm_data[field] });
         });
 
