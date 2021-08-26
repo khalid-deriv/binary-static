@@ -252,8 +252,9 @@ label {
 
 /* global styles */
 .required_field_asterisk {
-    position: absolute;
-    margin: -3px 3px;
+    position: relative;
+    left: 3px;
+    top: -3px;
     font-size: $FONT_SIZE_S;
     color: $COLOR_RED;
 
@@ -351,6 +352,15 @@ _:-ms-fullscreen, :root #content-holder {
     vertical-align: middle;
 }
 
+#email_consent + label {
+    display: flex;
+    justify-content: center;
+
+    &:before {
+        margin-top: 4px;
+    }
+}
+
 input[type=checkbox] {
     margin: 5px 5px 5px 0;
     padding: 7px;
@@ -370,7 +380,7 @@ input[type=checkbox] {
 
 .logged_out_title_container {
     margin-top: 40px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 button .barspinner.white {
@@ -409,6 +419,10 @@ button .barspinner.white {
     display: none;
     background: url('../images/common/scrollup_icon.svg') no-repeat;
     z-index: 999;
+}
+
+.flex {
+    display: flex;
 }
 
 .inline-flex {
@@ -486,6 +500,12 @@ button .barspinner.white {
 #virtual-form {
     .select2-container {
         max-width: 220px;
+    }
+    .hide-product-checkbox {
+        display: none;
+    }
+    .email-consent-container {
+        display: none;
     }
 }
 
@@ -572,8 +592,17 @@ button .barspinner.white {
     }
 }
 
+.required_asterisk:after {
+    content: '*';
+    color: $COLOR_RED;
+}
+
 ul.bullet.gr-row > li {
     display: list-item;
+}
+
+#tax_information_, #pep_declaration_note_toggle, #professional_info_toggle {
+    font-weight: bold;
 }
 
 .toggle-arrow {
@@ -747,6 +776,9 @@ li strong.margin-right {
         color: $COLOR_BLACK;
         font-weight: 400;
         padding-left: 1rem;
+    }
+    .text-capitalize {
+        text-transform: capitalize !important;
     }
 
     @media screen and (max-width: 650px) {

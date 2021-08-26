@@ -9,8 +9,8 @@ const Column = ({
     text,
     url,
 }) => (
-    <div className={`gr-3 gr-6-m gr-no-gutter gr-parent ${className}`} id={id} data-show={dataShow}>
-        <div className='gr-8 gr-padding-10'>
+    <div className={`gr-3 gr-6-m gr-no-gutter gr-parent center-text-m ${className}`} id={id} data-show={dataShow}>
+        <div className='gr-8 gr-padding-10 gr-centered-m'>
             <a href={it.url_for(`user/security/${url}`)}>
                 <img className='responsive' src={it.url_for(`images/pages/settings/${image}.svg`)} />
             </a>
@@ -40,11 +40,11 @@ const Security = () => (
             </div>
 
             <div className='gr-row gr-padding-30'>
-                <Column className='invisible' id='change_password' url='change_passwordws' image='account_password' header={it.L('Account Password')} text={it.L('Change your main login password.')} />
+                <Column id='change_password' url='change_passwordws' image='account_password' header={it.L('Account Password')} text={it.L('Change your Binary password and MT5 password.')} />
 
                 <Column className='real invisible' url='self_exclusionws' image='self-exclusion' header={it.L('Self Exclusion')} text={it.L('Facility that allows you to set limits on your account.')} />
 
-                <Column dataShow='-maltainvest' className='real invisible' url='limitsws' image='limits' header={it.L('Limits')} text={it.L('View your trading and withdrawal limits.')} />
+                <Column dataShow='-maltainvest, -optionsblocked' className='real invisible' url='limitsws' image='limits' header={it.L('Limits')} text={it.L('View your trading and withdrawal limits.')} />
 
                 <Column url='iphistoryws' image='iphistory' header={it.L('Login History')} text={it.L('View your login history.')} />
 

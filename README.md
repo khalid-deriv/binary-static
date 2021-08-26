@@ -22,6 +22,17 @@ In order to use your custom domain, please put it in a file named `CNAME` inside
 How to work with this project
 =============================
 
+## Test link deployments
+
+There are two types of test link deployment preview:
+
+1. Automatic deployment
+
+Upon creating PR, `vercel` (https://vercel.com/) will auto-generate test link inside the PR. you can use that to preview test link for the changes you have made.
+
+2. Manual deployments
+
+You can manually deploy your test link using gh-pages with the following configurations:
 ### Deploy to your gh-pages for the first time
 
 1. Register your application [here](https://developers.binary.com/applications/). This will give you the ability to redirect back to your github pages after login.

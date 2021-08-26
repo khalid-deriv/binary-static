@@ -21,7 +21,6 @@ const showLoadingImage        = require('../../../../_common/utility').showLoadi
     To handle onfido unsupported country, we handle the functions separately,
     the name of the functions will be original name + uns abbreviation of `unsupported`
 */
-
 const Authenticate = (() => {
     let is_any_upload_failed     = false;
     let is_any_upload_failed_uns = false;
@@ -391,27 +390,39 @@ const Authenticate = (() => {
         processFilesUns(files);
     };
 
+    const cancelUpload = () => {
+        removeButtonLoading();
+        enableDisableSubmit();
+    };
+
     const processFiles = (files) => {
         const uploader = new DocumentUploader({ connection: BinarySocket.get() }); // send 'debug: true' here for debugging
         let idx_to_upload     = 0;
-        let is_any_file_error = false;
+        let has_file_error = false;
 
-        compressImageFiles(files).then((files_to_process) => {
-            readFiles(files_to_process).then((processed_files) => {
-                processed_files.forEach((file) => {
-                    if (file.message) {
-                        is_any_file_error = true;
-                        showError(file);
-                    }
-                });
+        readFiles(files).then((files_to_process) => {
+            files_to_process.forEach((file) => {
+                if (file.message) {
+                    has_file_error = true;
+                    showError(file);
+                }
+            });
+
+            if (has_file_error) {
+                cancelUpload();
+                return;
+            }
+            
+            compressImageFiles(files_to_process).then((processed_files) => {
                 const total_to_upload = processed_files.length;
-                if (is_any_file_error || !total_to_upload) {
-                    removeButtonLoading();
-                    enableDisableSubmit();
-                    return; // don't start submitting files until all front-end validation checks pass
+
+                if (!total_to_upload) {
+                    cancelUpload();
+                    return;
                 }
 
                 const isLastUpload = () => total_to_upload === idx_to_upload + 1;
+
                 // sequentially send files
                 const uploadFile = () => {
                     const $status = $submit_table.find(`.${processed_files[idx_to_upload].passthrough.class} .status`);
@@ -501,9 +512,9 @@ const Authenticate = (() => {
         const promises = [];
         files.forEach((f) => {
             const promise = new Promise((resolve) => {
-                if (isImageType(f.file.name)) {
-                    const $status = $submit_table.find(`.${f.class} .status`);
-                    const $filename = $submit_table.find(`.${f.class} .filename`);
+                if (isImageType(f.filename)) {
+                    const $status = $submit_table.find(`.${f.passthrough.class} .status`);
+                    const $filename = $submit_table.find(`.${f.passthrough.class} .filename`);
                     $status.text(`${localize('Compressing Image')}...`);
 
                     ConvertToBase64(f.file).then((img) => {
@@ -563,6 +574,7 @@ const Authenticate = (() => {
 
                     const format = (f.file.type.split('/')[1] || (f.file.name.match(/\.([\w\d]+)$/) || [])[1] || '').toUpperCase();
                     const obj    = {
+                        file          : f.file,
                         filename      : f.file.name,
                         buffer        : fr.result,
                         documentType  : f.type,
@@ -764,7 +776,8 @@ const Authenticate = (() => {
     };
 
     const showSuccess = () => {
-        BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(() => {
+        BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(response => {
+            authentication_object = response.get_account_status.authentication;
             Header.displayAccountStatus();
             removeButtonLoading();
             $button.setVisibility(0);
@@ -776,7 +789,8 @@ const Authenticate = (() => {
     };
 
     const showSuccessUns = () => {
-        BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(() => {
+        BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(response => {
+            authentication_object = response.get_account_status.authentication;
             Header.displayAccountStatus();
             removeButtonLoadingUns();
             $button_uns.setVisibility(0);
@@ -851,10 +865,12 @@ const Authenticate = (() => {
                         phrases      : onfido_phrases,
                         mobilePhrases: onfido_phrases,
                     },
-                    token     : sdk_token,
-                    useModal  : false,
-                    onComplete: handleComplete,
-                    steps     : [
+                    token   : sdk_token,
+                    useModal: false,
+                    onComplete(data) {
+                        handleComplete(data);
+                    },
+                    steps: [
                         {
                             type   : 'document',
                             options: {
@@ -886,6 +902,9 @@ const Authenticate = (() => {
         const type_pending = type === 'identity' ? 'poa' : 'poi';
         const description_status = status !== 'verified';
 
+        $(`#text_verified_${type_pending}_required, #text_pending_${type_pending}_required`).setVisibility(0);
+        $(`#button_verified_${type_pending}_required, #button_pending_${type_pending}_required`).setVisibility(0);
+
         if (needs_verification.includes(type)) {
             $(`#text_${status}_${type_required}_required`).setVisibility(1);
             $(`#button_${status}_${type_required}_required`).setVisibility(1);
@@ -894,16 +913,22 @@ const Authenticate = (() => {
         }
     };
 
-    const handleComplete = () => {
+    const handleComplete = (data) => {
+        const document_ids = Object.keys(data).map(key => data[key].id);
+
         BinarySocket.send({
             notification_event: 1,
             category          : 'authentication',
             event             : 'poi_documents_uploaded',
+            args              : {
+                documents: document_ids,
+            },
         }).then(() => {
             onfido.tearDown();
             $('#authentication_loading').setVisibility(1);
             setTimeout(() => {
-                BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(() => {
+                BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(response => {
+                    authentication_object = response.get_account_status.authentication;
                     $('#msg_personal_details').setVisibility(0);
                     $('#upload_complete').setVisibility(1);
                     Header.displayAccountStatus();
