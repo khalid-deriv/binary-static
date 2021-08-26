@@ -7,9 +7,10 @@ const Url            = require('../../_common/url');
  * Handles utm parameters/referrer to use on signup
  *
  * Priorities:
- * 1. Cookie having utm data (utm_source, utm_medium, utm_campaign) [Expires in 3 months]
- * 2. Query string utm parameters
- * 3. document.referrer
+ * 1. Affiliate utm data
+ * 2. PPC utm data
+ * 3. Cookie having main utm data (utm_source, utm_medium, utm_campaign) [Expires in 3 months]
+ * 4. Everything else
  *
  */
 
@@ -50,14 +51,19 @@ const TrafficSource = (() => {
         
         // Check if both new and old utm_data has all required filds
         const required_fields = ['utm_source', 'utm_medium', 'utm_campaign'];
-        const has_all_params = required_fields.every((field) => new_utm_data[field] && current_utm_data[field]);
-        
+        const has_new_required_fields = required_fields.every((field) => new_utm_data[field]);
+        const has_curr_required_fields = required_fields.every((field) =>current_utm_data[field]);
+
         // Overwrite based on the order of priority
-        if (has_all_params) {
+        if (has_new_required_fields && has_curr_required_fields) {
             if (new_utm_data.utm_medium.includes('aff')) return true; // 1. Affiliate tags
             else if (new_utm_data.utm_medium.includes('ppc') && !current_utm_data.utm_medium.includes('aff')) return true; // 2. PPC tags
             else if (!current_utm_data.utm_medium.includes('ppc') && !current_utm_data.utm_medium.includes('aff')) return true; // 3. Complete set of required tags
-        } else if (new_utm_data.utm_source
+        } else if (has_new_required_fields) {
+            return true;
+        } else if (has_curr_required_fields) {
+            return false;
+        } else if (new_utm_data.utm_source !== undefined
             && Object.values(new_utm_data).length >= Object.values(current_utm_data).length) return true; // 4. Everything else
         return false;
     };
