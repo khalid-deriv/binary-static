@@ -69,7 +69,7 @@ const TrafficSource = (() => {
     };
 
     // get source in order of precedence
-    const getSource = (utm_data = getData()) => utm_data.utm_source || document.referrer || null;
+    const getSource = (utm_data = getData()) => utm_data.utm_source || 'null';
 
     const setData = () => {
         if (Client.isLoggedIn()) {
@@ -77,7 +77,9 @@ const TrafficSource = (() => {
             return;
         }
 
-        const new_values     = { utm_source: document.referrer || null };
+        const new_values = {
+            utm_source: document.referrer.includes(location.hostname) ? 'null' : document.referrer || 'null',
+        };
         const current_values = getData();
         const params         = Url.paramsHash();
 
