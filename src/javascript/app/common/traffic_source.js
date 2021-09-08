@@ -49,7 +49,7 @@ const TrafficSource = (() => {
             return false;
         }
         
-        // Check if both new and old utm_data has all required filds
+        // Check if both new and old utm_data has all required fields
         const required_fields = ['utm_source', 'utm_medium', 'utm_campaign'];
         const has_new_required_fields = required_fields.every((field) => new_utm_data[field]);
         const has_curr_required_fields = required_fields.every((field) =>current_utm_data[field]);
@@ -78,7 +78,7 @@ const TrafficSource = (() => {
         }
 
         const new_values = {
-            utm_source: document.referrer.includes(location.hostname) ? 'null' : document.referrer || 'null',
+            utm_source: document.referrer.includes(location.hostname) ? null : document.referrer.replace(/([^a-zA-Z0-9\s\-\.\_]|https)/gi, '').substring(0, 100) || null,
         };
         const current_values = getData();
         const params         = Url.paramsHash();
