@@ -78,7 +78,7 @@ const TrafficSource = (() => {
         }
 
         const new_values = {
-            utm_source: document.referrer.includes(location.hostname) ? null : document.referrer.replace(/([^a-zA-Z0-9\s\-\.\_]|https)/gi, '').substring(0, 100) || null,
+            utm_source: document.referrer.includes(location.hostname) ? 'null' : document.referrer.replace(/([^a-zA-Z0-9\s\-\.\_]|https)/gi, '').substring(0, 100) || 'null',
         };
         const current_values = getData();
         const params         = Url.paramsHash();
