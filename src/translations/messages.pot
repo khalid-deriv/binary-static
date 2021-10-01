@@ -733,6 +733,9 @@ msgstr ""
 msgid "A bachelor's degree in commerce or any business-related field, law, or risk management"
 msgstr ""
 
+msgid "A binary option is a contract in which one party undertakes to pay the other party a specified amount if the value of a given asset changes in a specific direction within a predetermined period. The major underlying asset class for binary options offered by the Company is synthetic indices."
+msgstr ""
+
 msgid "A binary option is a contract in which one party undertakes to pay the other party a specified amount if the value of a given asset changes in a specific direction within a predetermined period. The three major underlying asset classes for binary options offered by the Company are"
 msgstr ""
 
@@ -1579,9 +1582,6 @@ msgstr ""
 msgid "Appropriateness"
 msgstr ""
 
-msgid "Appropriateness Test: WARNING:"
-msgstr ""
-
 msgid "Appropriateness test"
 msgstr ""
 
@@ -2185,10 +2185,13 @@ msgstr ""
 msgid "Binary options trading frequency"
 msgstr ""
 
+msgid "Binary options trading is not available in your Multipliers account."
+msgstr ""
+
 msgid "Binary options trading is not available in your country."
 msgstr ""
 
-msgid "Binary options trading is not available in your financial account."
+msgid "Binary options trading is not available via your Multipliers account.<br/>Please switch back to your Options account."
 msgstr ""
 
 msgid "Binary options trading is relatively easy. You can purchase a contract in just three steps:"
@@ -2419,13 +2422,22 @@ msgstr ""
 msgid "CFDs"
 msgstr ""
 
+msgid "CFDs Account"
+msgstr ""
+
 msgid "CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. %1 of retail investor accounts lose money when trading CFDs with Deriv Investments (Europe) Limited. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money."
+msgstr ""
+
+msgid "CFDs on Synthetic Indices"
 msgstr ""
 
 msgid "CFDs on commodities"
 msgstr ""
 
-msgid "CFDs on indices"
+msgid "CFDs on stock indices"
+msgstr ""
+
+msgid "CFDs on stocks"
 msgstr ""
 
 msgid "CFH Clearing Limited"
@@ -2713,13 +2725,13 @@ msgstr ""
 msgid "Click OK to proceed."
 msgstr ""
 
-msgid "Click here to open a Financial Account"
-msgstr ""
-
-msgid "Click here to open a Gaming account"
+msgid "Click here to open a Multipliers Account"
 msgstr ""
 
 msgid "Click here to open a Real Account"
+msgstr ""
+
+msgid "Click here to open an Options account"
 msgstr ""
 
 msgid "Click here to retry"
@@ -2987,9 +2999,6 @@ msgid "Company's obligations"
 msgstr ""
 
 msgid "Company's rights"
-msgstr ""
-
-msgid "Compare MetaTrader 5 accounts"
 msgstr ""
 
 msgid "Compensation under Investor Compensation Scheme"
@@ -3364,16 +3373,16 @@ msgstr ""
 msgid "Create Account"
 msgstr ""
 
-msgid "Create MT5 password"
-msgstr ""
-
 msgid "Create New Demo Account"
 msgstr ""
 
-msgid "Create a MT5 password. You can use this password for all your MT5 accounts."
+msgid "Create a CFDs account"
 msgstr ""
 
 msgid "Create a MetaTrader 5 account"
+msgstr ""
+
+msgid "Create a New Demo Account"
 msgstr ""
 
 msgid "Create a new Binary password."
@@ -3386,6 +3395,12 @@ msgid "Create account"
 msgstr ""
 
 msgid "Create an MT5 account now"
+msgstr ""
+
+msgid "Create an MT5 password for logging in to your CFDs account."
+msgstr ""
+
+msgid "Create an MT5 password. You can use this password for all your MT5 accounts."
 msgstr ""
 
 msgid "Create and maintain wireframes and mockups for new and existing products"
@@ -3409,16 +3424,13 @@ msgstr ""
 msgid "Create mathematical/statistical models for pricing, analyse fat tails to assess margin requirements, and manage the risk for exotic options, forex, and CFDs"
 msgstr ""
 
-msgid "Create new demo account"
+msgid "Create new Demo account"
 msgstr ""
 
 msgid "Create new token"
 msgstr ""
 
 msgid "Create or Manage Accounts"
-msgstr ""
-
-msgid "Create or reset password"
 msgstr ""
 
 msgid "Create strategies against potential risks that might arise due to disruptive innovation"
@@ -3715,7 +3727,7 @@ msgstr ""
 msgid "Demo Accounts"
 msgstr ""
 
-msgid "Demo Financial"
+msgid "Demo CFDs"
 msgstr ""
 
 msgid "Demo Financial STP"
@@ -3730,7 +3742,7 @@ msgstr ""
 msgid "Depending on the jurisdiction to which a client's account has been attached in accordance with the account opening procedures of the website and as detailed in the About us section of the website and the type of products offered, the term \"the Company\" shall denote,"
 msgstr ""
 
-msgid "Depending on the jurisdiction to which a client's account has been attached in accordance with the account opening procedures of the website, the terms 'the Company' and '%1' shall denote either"
+msgid "Depending on the jurisdiction to which a client's account has been attached in accordance with the account opening procedures of the website, the terms 'the Company' and '%1' shall denote"
 msgstr ""
 
 msgid "Depending on the level of risk that the Company is exposed to while acting as the client's counterparty, the Company acts largely in a principal capacity of the client's trades. As such, the execution venue will usually be %1. However, the Company may transmit the client's order to third-party liquidity providers, in which case the Company will determine the execution venue on the basis described above."
@@ -3805,13 +3817,7 @@ msgstr ""
 msgid "Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, is licensed and regulated (for gambling products only - %1's Synthetic Indices) by the Malta Gaming Authority in Malta (%2licence no. MGA/B2C/102/2000%3) and by the Revenue Commissioners for clients in Ireland (licence no. 1010285)."
 msgstr ""
 
-msgid "Deriv (Europe) Limited, or"
-msgstr ""
-
 msgid "Deriv (FX) Ltd"
-msgstr ""
-
-msgid "Deriv (FX) Ltd,"
 msgstr ""
 
 msgid "Deriv (FX) Ltd, or"
@@ -5059,6 +5065,9 @@ msgstr ""
 msgid "Find a trading platform that suits your experience and preferred strategy – whether you're a new or seasoned trader."
 msgstr ""
 
+msgid "Find out more"
+msgstr ""
+
 msgid "Find out more about the costs and details of each CFD asset we offer."
 msgstr ""
 
@@ -5242,9 +5251,6 @@ msgstr ""
 msgid "Forex trading involves buying or selling these \"currency pairs\". When you buy a currency pair such as EUR/USD, it means that you are buying the EURO and selling the USD at the same time."
 msgstr ""
 
-msgid "Forgot password?"
-msgstr ""
-
 msgid "Founded in 1999, %1 is one of the oldest and most respected names in online binary trading."
 msgstr ""
 
@@ -5356,12 +5362,6 @@ msgstr ""
 msgid "GamCare"
 msgstr ""
 
-msgid "Gaming"
-msgstr ""
-
-msgid "Gaming Account"
-msgstr ""
-
 msgid "General"
 msgstr ""
 
@@ -5459,6 +5459,9 @@ msgid "Go long and short"
 msgstr ""
 
 msgid "Go short = sell"
+msgstr ""
+
+msgid "Go to DTrader"
 msgstr ""
 
 msgid "Go to MT5 download page"
@@ -6340,9 +6343,6 @@ msgstr ""
 msgid "In providing IB services, the Introducing Broker shall"
 msgstr ""
 
-msgid "In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved)."
-msgstr ""
-
 msgid "In providing the Agent's services, the Agent shall do the following:"
 msgstr ""
 
@@ -6584,9 +6584,6 @@ msgid "Investing in complex products, such as CFDs and FX may incur losses as we
 msgstr ""
 
 msgid "Investing or trading in contracts exposes the client to the performance of the underlying or reference instrument or asset to which the Binary contract refers, including foreign exchange, stock indices, and commodities, each of which have their own features and risks."
-msgstr ""
-
-msgid "Investment"
 msgstr ""
 
 msgid "Investment Income"
@@ -7792,6 +7789,9 @@ msgstr ""
 msgid "Multipliers"
 msgstr ""
 
+msgid "Multipliers Account"
+msgstr ""
+
 msgid "Must be a clear, colour photo"
 msgstr ""
 
@@ -8287,7 +8287,7 @@ msgstr ""
 msgid "Open a %1 account through DIEL's website %2"
 msgstr ""
 
-msgid "Open a Financial Account"
+msgid "Open a Multipliers Account"
 msgstr ""
 
 msgid "Open a Real Account"
@@ -8339,6 +8339,12 @@ msgid "Opening price"
 msgstr ""
 
 msgid "Opens"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Options Account"
 msgstr ""
 
 msgid "Options that let you “look back” on the optimum high or low achieved by the market to determine the payout."
@@ -8395,6 +8401,9 @@ msgstr ""
 msgid "Our Accounting &amp; Payments team manages our wide range of bank accounts and e-currency systems, as well as the huge volume of transactions that take place every day."
 msgstr ""
 
+msgid "Our CFDs account is suitable for both new and experienced traders."
+msgstr ""
+
 msgid "Our Company"
 msgstr ""
 
@@ -8444,6 +8453,9 @@ msgid "Our metal pairs are typically traded in lots. One standard lot is equival
 msgstr ""
 
 msgid "Our office in Dubai is located at the world-class Jumeirah Lake Towers (JLT) free zone. JLT is home to universities, commercial and residential towers, parks, and over 500 retail outlets, giving you exceptional convenience and a quality of life that you won't find anywhere else."
+msgstr ""
+
+msgid "Our products and services may expose you to risks that can be substantial at times, including the risk of losing your entire investment. Please note that by clicking %1Continue%2, you’ll be accepting these risks."
 msgstr ""
 
 msgid "Our proprietary synthetic indices that simulate market forces"
@@ -8948,6 +8960,9 @@ msgid "Please reload the page"
 msgstr ""
 
 msgid "Please remember at all times that trading binary options can be an exciting activity, but we have a moral duty to remind you of the risks you may run. Options trading can become a real addiction, as can any other activity pushed to its limits. We kindly ask you to engage in a careful self-analysis to check if you are at risk. To avoid the danger of such an addiction, it is important that you follow some basic principles and guidelines."
+msgstr ""
+
+msgid "Please remember that it is your responsibility to keep your answers accurate and up to date."
 msgstr ""
 
 msgid "Please resolve all pending issues to continue"
@@ -9502,10 +9517,10 @@ msgstr ""
 msgid "Real Account Opening"
 msgstr ""
 
-msgid "Real Estate"
+msgid "Real CFDs"
 msgstr ""
 
-msgid "Real Financial"
+msgid "Real Estate"
 msgstr ""
 
 msgid "Real Financial STP"
@@ -10195,7 +10210,7 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
-msgid "Server maintenance starting 01:00 GMT every Sunday. This process may take up to 2 hours to complete. Service may be disrupted during this time."
+msgid "Server maintenance starts at 01:00 (GMT) every Sunday. This process may take up to 2 hours to complete. You may experience service disruption during this time."
 msgstr ""
 
 msgid "Server:"
@@ -10211,6 +10226,9 @@ msgid "Session duration:"
 msgstr ""
 
 msgid "Set Currency"
+msgstr ""
+
+msgid "Set MT5 password"
 msgstr ""
 
 msgid "Set barrier(s) to define your position and trigger the payout you'll receive."
@@ -10612,9 +10630,6 @@ msgstr ""
 msgid "Straight rows of keys are easy to guess"
 msgstr ""
 
-msgid "Strong  password contain at least 8 characters, combine uppercase and lowercase letters and numbers."
-msgstr ""
-
 msgid "Strong analytical capabilities that have been proven in a prior capacity or a keen interest to move into this area"
 msgstr ""
 
@@ -10634,6 +10649,9 @@ msgid "Strong oral and written communication skills in both the regional languag
 msgstr ""
 
 msgid "Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols."
+msgstr ""
+
+msgid "Strong passwords contain at least 8 characters. Combine uppercase and lowercase letters, numbers, and symbols."
 msgstr ""
 
 msgid "Strong understanding of colours, typography, identity design, and branding"
@@ -11278,7 +11296,7 @@ msgstr ""
 msgid "The Company endeavours to open or close the transaction to which the client's Order relates at a price reasonably available to the Company, acting in accordance with the Company's duty of best execution. Best execution means that, when executing Orders, the Company must take all sufficient steps to obtain the best possible result for the client, taking into account the price, costs, speed, likelihood of execution and settlement, size, nature, or any other consideration relevant to the execution of the Order."
 msgstr ""
 
-msgid "The Company has a Stop Out policy which prevents the client from losing more than they have deposited. However, in the event that the client's Open Positions are not closed when the Margin Level for their MT5 Real Account reaches the Stop Out Level, the Company, at its sole discretion, may waive the client's negative balance by crediting their account if their Account Balance goes into a negative balance. The negative balance is determined by aggregating all the negative balances incurred over a 24-hour period across all accounts held by the client. The client acknowledges that, unless they are a retail customer of Deriv Investments (Europe) Limited, a client of Deriv (Europe) Limited, or a retail customer residing in Australia, the offer of the negative balance protection by the Company to the client is at the Company's sole discretion and the Company reserves the right to change the features and eligibility criteria of the negative balance protection at any time. The provisions of the negative balance protection do not apply in the following situations:"
+msgid "The Company has a Stop Out policy which prevents the client from losing more than they have deposited. However, in the event that the client's Open Positions are not closed when the Margin Level for their MT5 Real Account reaches the Stop Out Level, the Company, at its sole discretion, may waive the client's negative balance by crediting their account if their Account Balance goes into a negative balance. The negative balance is determined by aggregating all the negative balances incurred over a 24-hour period across all accounts held by the client. The client acknowledges that, unless they are a retail customer of Deriv Investments (Europe) Limited or a retail customer residing in Australia, the offer of the negative balance protection by the Company to the client is at the Company's sole discretion and the Company reserves the right to change the features and eligibility criteria of the negative balance protection at any time. The provisions of the negative balance protection do not apply in the following situations:"
 msgstr ""
 
 msgid "The Company has a general duty to conduct its business with the client honestly, fairly, and professionally and to act in the client's best interests when opening and closing binary options trades with the client."
@@ -13141,7 +13159,7 @@ msgstr ""
 msgid "Trade with leverage"
 msgstr ""
 
-msgid "Trade with real funds and access to competitive trading conditions."
+msgid "Trade with real funds and get access to competitive trading conditions."
 msgstr ""
 
 msgid "Trade with the industry pioneer and holder of a patented pricing technology."
@@ -13519,6 +13537,9 @@ msgstr ""
 msgid "Unemployed"
 msgstr ""
 
+msgid "Unfortunately, this service isn’t available in your country. If you’d like to trade multipliers, try DTrader on Deriv."
+msgstr ""
+
 msgid "University degree in Marketing, Mathematics, IT/Programming or any related field"
 msgstr ""
 
@@ -13627,6 +13648,9 @@ msgstr ""
 msgid "Usage limit"
 msgstr ""
 
+msgid "Use MT5 password to sign in to any of your CFDs accounts when using MT5 apps on your mobile or other devices."
+msgstr ""
+
 msgid "Use a few words, avoid common phrases"
 msgstr ""
 
@@ -13675,10 +13699,7 @@ msgstr ""
 msgid "Use their best endeavours to attract potential clients for Binary"
 msgstr ""
 
-msgid "Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions. Click Create or reset password, if this is your first investor password or if you've forgotten your password."
-msgstr ""
-
-msgid "Use this password to log in to your MT5 accounts on the desktop, web, and mobile apps."
+msgid "Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions. If this is the first time you try to create password, or you have forgotten your password, please reset it."
 msgstr ""
 
 msgid "Use to the utmost benefit any possible additional features that some payment processors offer"
@@ -13835,6 +13856,9 @@ msgid "Volume step"
 msgstr ""
 
 msgid "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
+msgstr ""
+
+msgid "WARNING"
 msgstr ""
 
 msgid "Waiting for contract settlement."
@@ -14620,6 +14644,9 @@ msgstr ""
 msgid "You can top up your demo account with an additional %1 if your balance is %2 or less."
 msgstr ""
 
+msgid "You can update personal details at any time in your account settings."
+msgstr ""
+
 msgid "You can use an authorized payment agent to process deposits and withdrawals for payment methods or local currencies not supported by %1. It's easy to do."
 msgstr ""
 
@@ -14642,6 +14669,9 @@ msgid "You have a new Binary password to log in to Binary.com."
 msgstr ""
 
 msgid "You have a new MT5 password to log in to your MT5 accounts on the web and mobile apps."
+msgstr ""
+
+msgid "You have a trading password for MT5"
 msgstr ""
 
 msgid "You have added a %1 account."
@@ -14797,7 +14827,7 @@ msgstr ""
 msgid "You will not be able to change currency once you have made a deposit."
 msgstr ""
 
-msgid "You will not be able to change your fiat account's currency after creating this MT5 account. Are you sure you want to proceed?"
+msgid "You will not be able to change your fiat account currency after creating this CFDs account. Are you sure you want to proceed?"
 msgstr ""
 
 msgid "You will not be able to change your fiat account's currency after making this deposit. Are you sure you want to proceed?"
@@ -15127,7 +15157,7 @@ msgstr ""
 msgid "deposit"
 msgstr ""
 
-msgid "deposit or create an MT5 account"
+msgid "deposit or create a CFDs account"
 msgstr ""
 
 msgid "details"
@@ -15137,6 +15167,9 @@ msgid "e.g. United States"
 msgstr ""
 
 msgid "e.g. frontend.binaryws.com"
+msgstr ""
+
+msgid "either"
 msgstr ""
 
 msgid "for account %1"
